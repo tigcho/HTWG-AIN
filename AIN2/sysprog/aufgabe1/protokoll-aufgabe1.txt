@@ -1,0 +1,94 @@
+selin@debil:~/AIN/sysprog/aufgabe1$ make clean
+rm -f aufgabe1 aufgabe1.o
+selin@debil:~/AIN/sysprog/aufgabe1$ make
+gcc -g -fno-stack-protector -W -Wall -std=c11 -pedantic    aufgabe1.c   -o aufgabe1
+selin@debil:~/AIN/sysprog/aufgabe1$ ./aufgabe1
+Adresse                 Platzbedarf     Typ                     Name            Wert
+0x7ffdfcc8800c          4               int                     i               123
+0x7ffdfcc8800a          2               short                   h               321
+0x7ffdfcc88000          8               long int                li              345
+0x7ffdfcc87ff8          8               long long int           lli             -789
+0x7ffdfcc87ff4          4               unsigned int            ui              4294967295
+0x7ffdfcc87ff2          2               unsigned short          us              65535
+0x7ffdfcc87fe8          8               unsigned long int       uli             384982
+0x7ffdfcc87fe0          8               unsigned long long int  ulli            18273
+0x7ffdfcc87fdc          4               float                   f               3.400000
+0x7ffdfcc87fd0          8               double                  d               3.500000
+0x7ffdfcc87fc0          16              long double             ld              3.450000
+0x7ffdfcc87fbf          1               char                    c               c
+0x7ffdfcc87fbe          1               signed char             sc              -1
+0x7ffdfcc87fbd          1               unsigned char           uc              255
+0x7ffdfcc87fbc          1               bool                    b               1
+0x7ffdfcc87fb0          1               signed char             *s              Hallo
+
+LP64
+
+selin@debil:~/AIN/sysprog/aufgabe1$ ./aufgabe1 | sort
+
+0x7fffa3ab8d80          1               signed char             *s              Hallo
+0x7fffa3ab8d8c          1               bool                    b               1
+0x7fffa3ab8d8d          1               unsigned char           uc              255
+0x7fffa3ab8d8e          1               signed char             sc              -1
+0x7fffa3ab8d8f          1               char                    c               c
+0x7fffa3ab8d90          16              long double             ld              3.450000
+0x7fffa3ab8da0          8               double                  d               3.500000
+0x7fffa3ab8dac          4               float                   f               3.400000
+0x7fffa3ab8db0          8               unsigned long long int  ulli            18273
+0x7fffa3ab8db8          8               unsigned long int       uli             384982
+0x7fffa3ab8dc2          2               unsigned short          us              65535
+0x7fffa3ab8dc4          4               unsigned int            ui              4294967295
+0x7fffa3ab8dc8          8               long long int           lli             -789
+0x7fffa3ab8dd0          8               long int                li              345
+0x7fffa3ab8dda          2               short                   h               321
+0x7fffa3ab8ddc          4               int                     i               123
+Adresse                 Platzbedarf     Typ                     Name            Wert
+LP64
+
+selin@debil:~/AIN/sysprog/aufgabe1$ ./aufgabe1 | sort -r
+LP64
+Adresse                 Platzbedarf     Typ                     Name            Wert
+0x7ffc181f150c          4               int                     i               123
+0x7ffc181f150a          2               short                   h               321
+0x7ffc181f1500          8               long int                li              345
+0x7ffc181f14f8          8               long long int           lli             -789
+0x7ffc181f14f4          4               unsigned int            ui              4294967295
+0x7ffc181f14f2          2               unsigned short          us              65535
+0x7ffc181f14e8          8               unsigned long int       uli             384982
+0x7ffc181f14e0          8               unsigned long long int  ulli            18273
+0x7ffc181f14dc          4               float                   f               3.400000
+0x7ffc181f14d0          8               double                  d               3.500000
+0x7ffc181f14c0          16              long double             ld              3.450000
+0x7ffc181f14bf          1               char                    c               c
+0x7ffc181f14be          1               signed char             sc              -1
+0x7ffc181f14bd          1               unsigned char           uc              255
+0x7ffc181f14bc          1               bool                    b               1
+0x7ffc181f14b0          1               signed char             *s              Hallo
+
+selin@debil:~/AIN/sysprog/aufgabe1$ make cppcheck
+cppcheck --enable=all --std=c11 aufgabe1.c
+Checking aufgabe1.c ...
+aufgabe1.c:80:26: warning: Logical conjunction always evaluates to false: sizeof(int) == 4 && sizeof(long) == 4. [incorrectLogicOperator]
+    if (sizeof(int) == 4 && sizeof(long int) == 4 && sizeof(char*) == 4)
+                         ^
+aufgabe1.c:84:31: warning: Logical conjunction always evaluates to false: sizeof(int) == 4 && sizeof(long) == 4. [incorrectLogicOperator]
+    else if (sizeof(int) == 4 && sizeof(long int) == 4 && sizeof(long long int) == 8 && sizeof(char*) == 8)
+                              ^
+
+
+
+---------------------------------------------FRAGEN ZUM PROGRAMM-------------------------------------------------------
++ Sind die Variablen in der Reihenfolge ihrer Definition im Hauptspeicher abgelegt?
+	Wenn man sie nicht sortiert, werden sie so ausgegeben, wie sie definiert wurden.
+		
++ Liegen die Variablen direkt hintereinander oder gibt es Lücken? Falls es Lücken gibt, wo liegen sie? Können Sie sich erklären, warum es eventuell Lücken gibt?
+	i.d.R. müssen Variablen eine durch sizeof (Typ) teilbare Adresse haben (Alignment). Es gibt z.B. Lücken zwischen:
+
+	1. int und short
+	2. short und long
+	3. long und long long
+	4. long long und unsigned int usw....
+	
+
++ Wie viel Speicher belegen die Variablen insgesamt, also inklusive eventueller Lücken?
+	92 (Startadresse) + 4 (bis zum int) = 96 Byte
+ 
