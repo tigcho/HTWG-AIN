@@ -1,0 +1,248 @@
+-------------------------------------------------------------------------------
+-------------------------BUBBLESORT.JAVA---------------------------------------
+-------------------------------------------------------------------------------
+selin@debil:~/AIN/sysprog/aufgabe2$ java Bubblesort.java 10
+Bitte 10 ganze Zahlen eingeben: 1 2 3 4 5 6 3 4 5 2
+Sortierte Zahlenfolge:
+1
+2
+2
+3
+3
+4
+4
+5
+5
+6
+selin@debil:~/AIN/sysprog/aufgabe2$ java Bubblesort.java 10
+Bitte 10 ganze Zahlen eingeben: random
+747001556
+684682559
+-893425614
+1884301709
+-722926181
+-1683471909
+-1329849280
+-1120370068
+-2097972086
+-1611444525
+Sortierte Zahlenfolge:
+-2097972086
+-1683471909
+-1611444525
+-1329849280
+-1120370068
+-893425614
+-722926181
+684682559
+747001556
+1884301709
+selin@debil:~/AIN/sysprog/aufgabe2$ java Bubblesort.java 10
+Bitte 10 ganze Zahlen eingeben: 2 3 4 1 5 schokolade
+-240504286
+1733370864
+-1978754570
+-811552452
+224159314
+Sortierte Zahlenfolge:
+-1978754570
+-811552452
+-240504286
+1
+2
+3
+4
+5
+224159314
+1733370864
+
+
+selin@debil:~/AIN/sysprog/aufgabe2$ java Bubblesort.java 129839182739873982749823749203948
+Exception in thread "main" java.lang.NumberFormatException: For input string: "129839182739873982749823749203948"
+        at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:67)
+        at java.base/java.lang.Integer.parseInt(Integer.java:668)
+        at java.base/java.lang.Integer.parseInt(Integer.java:786)
+        at Bubblesort.main(Bubblesort.java:28)
+selin@debil:~/AIN/sysprog/aufgabe2$ java Bubblesort.java -10 -23 -45- 67
+Aufruf: java Bubblesort Anzahl
+selin@debil:~/AIN/sysprog/aufgabe2$ java Bubblesort.java -10
+Exception in thread "main" java.lang.NegativeArraySizeException: -10
+        at Bubblesort.main(Bubblesort.java:29)
+
+
+selin@debil:~/AIN/sysprog/aufgabe2$ time java Bubblesort.java 1000 < /dev/null > /dev/null
+
+real    0m0.935s
+user    0m2.561s
+sys     0m0.192s
+selin@debil:~/AIN/sysprog/aufgabe2$ time java Bubblesort.java 10000 < /dev/null > /dev/null
+
+real    0m1.045s
+user    0m2.992s
+sys     0m0.160s
+selin@debil:~/AIN/sysprog/aufgabe2$ time java Bubblesort.java 100000 < /dev/null > /dev/null
+
+real    0m34.505s
+user    0m36.313s
+sys     0m0.328s
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+---------------------------------BUBBLESORT.C----------------------------------
+-------------------------------------------------------------------------------
+selin@debil:~/AIN/sysprog$ cd aufgabe2/
+selin@debil:~/AIN/sysprog/aufgabe2$ ./bubblesort 10
+Bitte 10 ganze Zahlen eingeben: 1 2 3 4 5 6 3 4 5 2
+Sortierte Zahlenfolge:
+1
+2
+2
+3
+3
+4
+4
+5
+5
+6
+selin@debil:~/AIN/sysprog/aufgabe2$ ./bubblesort 10
+Bitte 10 ganze Zahlen eingeben: random
+1469004551
+1321097931
+1299245952
+891570266
+1946227375
+888437058
+1274442339
+320056666
+1507454029
+2128667433
+Sortierte Zahlenfolge:
+320056666
+888437058
+891570266
+1274442339
+1299245952
+1321097931
+1469004551
+1507454029
+1946227375
+2128667433
+selin@debil:~/AIN/sysprog/aufgabe2$ ./bubblesort 10
+Bitte 10 ganze Zahlen eingeben: 2 3 4 1 5 schokolade
+1064764846
+751936168
+1009340384
+495732352
+396864271
+Sortierte Zahlenfolge:
+1
+2
+3
+4
+5
+396864271
+495732352
+751936168
+1009340384
+1064764846
+
+
+selin@debil:~/AIN/sysprog/aufgabe2$ ./bubblesort 129839182739873982749823749203948
+Speicherreservierung fehlgeschlagen
+selin@debil:~/AIN/sysprog/aufgabe2$ ./bubblesort -10 -23 -45- 67
+Aufruf: ./Bubblesort Anzahl
+selin@debil:~/AIN/sysprog/aufgabe2$ ./bubblesort -10
+Speicherreservierung fehlgeschlagen
+
+
+
+selin@debil:~/AIN/sysprog/aufgabe2$ valgrind ./bubblesort 10
+==19196== Memcheck, a memory error detector
+==19196== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==19196== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==19196== Command: ./bubblesort 10
+==19196==
+Bitte 10 ganze Zahlen eingeben: 1 2 4 5 6 2 5 4 7 3
+Sortierte Zahlenfolge:
+1
+2
+2
+3
+4
+4
+5
+5
+6
+7
+==19196==
+==19196== HEAP SUMMARY:
+==19196==     in use at exit: 0 bytes in 0 blocks
+==19196==   total heap usage: 3 allocs, 3 frees, 2,088 bytes allocated
+==19196==
+==19196== All heap blocks were freed -- no leaks are possible
+==19196==
+==19196== For lists of detected and suppressed errors, rerun with: -s
+==19196== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+selin@debil:~/AIN/sysprog/aufgabe2$ make cppcheck
+cppcheck --enable=warning,style --std=c11 bubblesort.c
+Checking bubblesort.c ...
+
+
+selin@debil:~/AIN/sysprog/aufgabe2$ ./bubblesort 1000 < /dev/null | tail -1000 > out.txt
+selin@debil:~/AIN/sysprog/aufgabe2$ sort -n out.txt | diff - out.txt
+
+selin@debil:~/AIN/sysprog/aufgabe2$ time ./bubblesort 1000 < /dev/null > /dev/null
+
+real    0m0.006s
+user    0m0.007s
+sys     0m0.000s
+selin@debil:~/AIN/sysprog/aufgabe2$ time ./bubblesort 10000 < /dev/null > /dev/null
+
+real    0m0.357s
+user    0m0.357s
+sys     0m0.001s
+selin@debil:~/AIN/sysprog/aufgabe2$ time ./bubblesort 100000 < /dev/null > /dev/null
+
+real    0m52.224s
+user    0m52.214s
+sys     0m0.004s
+
+----------------optimiert-------------------
+selin@debil:~/AIN/sysprog/aufgabe2$ time ./bubblesort 1000 < /dev/null > /dev/null
+
+real    0m0.006s
+user    0m0.006s
+sys     0m0.001s
+selin@debil:~/AIN/sysprog/aufgabe2$ time ./bubblesort 10000 < /dev/null > /dev/null
+
+real    0m0.355s
+user    0m0.354s
+sys     0m0.000s
+selin@debil:~/AIN/sysprog/aufgabe2$ time ./bubblesort 100000 < /dev/null > /dev/null
+
+real    0m52.023s
+user    0m52.015s
+sys     0m0.004s
+
+
+
+-------------------------------------------------------------------------------
+--------------------------------FRAGEN-----------------------------------------
+-------------------------------------------------------------------------------
+*Wächst die Ausführungszeit tatsächlich quadratisch mit der Array-Größe?*
+
+von 1000 auf 10000 erhöht es sich etwa um das 80-fache, genauso wie
+von 10000 auf 100000, also ja
+
+
+*Ist das Java-Programm oder das C-Programm schneller?
+ Können Sie sich den Unterschied erklären?*
+
+ C wird direkt von der Hardware ausgeführt und Java von einer
+ virtuellen Maschine. In C schreibe ich alles so, wie ich es haben
+ will, aber in Java wird viel von der VM übernommen oder implizit
+ hinzugefügt/kontrolliert, was in C nicht passiert.
