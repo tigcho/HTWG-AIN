@@ -210,7 +210,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
         JMenuItem menuItem1 = new JMenuItem(" Save...   ");
         menuItem1.addActionListener(std);
         menuItem1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-                                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         menu.add(menuItem1);
         return menuBar;
     }
