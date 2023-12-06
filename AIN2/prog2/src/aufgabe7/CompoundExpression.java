@@ -2,7 +2,6 @@ package aufgabe7;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class CompoundExpression implements Expression {
     Expression e1;
