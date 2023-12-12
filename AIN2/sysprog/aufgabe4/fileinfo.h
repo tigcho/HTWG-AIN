@@ -32,8 +32,13 @@ struct fileinfo {
     };
 };
 
+/* TODO: Eingabeparameter für einen Dateinamen und als Rückgabewert einen Zeiger auf eine fileinfo-Struktur*/
 fileinfo* fileinfo_create(char* name);
+
+/* TODO: Eingabeparameter für einen Zeiger auf eine fileinfo-Struktur und keinen Rückgabewert */
 void fileinfo_print(fileinfo* info);
-void fileinfo_destroy(fileinfo*);
+
+/* TODO: Eingabeparameter für einen Zeiger auf eine fileinfo-Struktur und keinen Rückgabewert*/
+void fileinfo_destroy(fileinfo* info);
 
 #endif
