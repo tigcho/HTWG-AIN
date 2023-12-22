@@ -1,9 +1,9 @@
 #include "fileinfo.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <linux/limits.h>
 #include <sys/stat.h>
+#include <string.h>
+#include <limits.h>
 #include <dirent.h>
 #include <unistd.h>
 #include <errno.h>
@@ -154,8 +154,12 @@ static void print_directory(char const* path, char const* filename, fileinfo* fi
 
         while (files->next != NULL) {
             if (files->next->type == filetype_directory) {
+                size_t n = strlen(path) + strlen(filename) + 2;
+                char *wong = malloc(n);
                 printf("%s (directory)\n", files->next->name);
-                print_directory(filename, files->next->name, files->next->list);
+                sprintf(wong, "%s%s/n", path, filename);
+                print_directory(wong, files->next->name, files->next->list);
+                free(wong);
             }
             else {
                 fileinfo_print(files->next);
@@ -194,7 +198,7 @@ void fileinfo_print(fileinfo* file)
 /* TODO: soll einen Eingabeparameter für einen Zeiger auf eine fileinfo-Struktur
     haben und keinen Rückgabewert. Sie soll den Speicher der übergebenen Struktur und im
     Falle des Dateityps Verzeichnis auch der Strukturen aller Unterverzeichnisse freigeben*/
-void fileinfo_destroy(fileinfo* info) {
+void fileinfo_destroy(const fileinfo* info) {
     if (info->type == filetype_directory) {
         fileinfo* current = info->list;
 
@@ -212,6 +216,6 @@ void fileinfo_destroy(fileinfo* info) {
             current = next;
         }
     }
-    free(info);
+    free((void*) info);
 }
 

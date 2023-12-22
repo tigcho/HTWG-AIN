@@ -18,7 +18,7 @@ enum filetype {
 struct fileinfo {
 
 /* TODO: Array-Größe die symbolische Konstante NAME_MAX aus limits.h */
-    char name[NAME_MAX];
+    char name[NAME_MAX + 1];
 
 /* TODO: Listenverkettung in Form eines Zeigers auf struct fileinfo
     und ein Array von Zeichen für den Dateinamen enthalten */
@@ -39,6 +39,6 @@ fileinfo* fileinfo_create(char* name);
 void fileinfo_print(fileinfo* info);
 
 /* TODO: Eingabeparameter für einen Zeiger auf eine fileinfo-Struktur und keinen Rückgabewert*/
-void fileinfo_destroy(fileinfo* info);
+void fileinfo_destroy(const fileinfo* info);
 
 #endif
