@@ -3,9 +3,6 @@
 #include "fachnoten_liste.h"
 #include <iostream>
 #include <iomanip>
-#include <stdexcept>
-#include <cstdio>
-#include <string>
 
 namespace
 {
