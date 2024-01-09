@@ -53,8 +53,7 @@ public class Aufgabe1_WarmUp {
     private static void aufgabe_b() {
         // Schreiben Sie eine statische Methode removeDuplicates(l),
         // die eine Liste zurückliefert mit allen Elementen
-        // aus der Liste l ohne Duplikate.
-        // Die Liste l bleibt unverändert.
+        // aus der Liste l ohne Duplikate. Die Liste l bleibt unverändert.
 
         List<String> lStr = new LinkedList<>();
         lStr.add("vier");
@@ -64,7 +63,6 @@ public class Aufgabe1_WarmUp {
         lStr.add("fuenf");
         lStr.add("acht");
         lStr.add("vier");
-
         System.out.println(removeDuplicates(lStr));
     }
 
@@ -81,7 +79,7 @@ public class Aufgabe1_WarmUp {
     private static void aufgabe_c() {
         // Flexibilisieren Sie die Schnittstelle der statischen Methode append mit Hilfe des PECS-Prinzips so,
         // dass folgender Aufruf von append möglich ist.
-        // --> mit <? extends T>
+        // ---> mit <? extends T>
         List<Number> nbList = new ArrayList<>();
         nbList.add(4);
         nbList.add(5);
@@ -103,7 +101,6 @@ public class Aufgabe1_WarmUp {
         System.out.println(nbList);
         System.out.println(objList);
         System.out.println(l);
-
     }
 
     private static void aufgabe_d() {
@@ -132,7 +129,6 @@ public class Aufgabe1_WarmUp {
 
     private static <T> Set<T> findCommon(Collection<? extends T> a, Collection<? extends T> b) {
         Set<T> fc = new HashSet<>();
-
         for (T i : a) { // oder var statt T
             if (b.contains(i)) {
                 fc.add(i);
