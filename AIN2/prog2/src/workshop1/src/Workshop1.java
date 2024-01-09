@@ -10,8 +10,8 @@ public class Workshop1 {
 
         //Aufgabe1_WarmUp.loesung();              // 10 Punkte
         //Aufgabe2_Datenanalyse.loesung();        // 10 Punkte
-        Aufgabe3_Textanalyse.loesung();         // 20 Punkte
-        //Aufgabe4_Movies.loesung();            // 20 Punkte
+        //Aufgabe3_Textanalyse.loesung();         // 20 Punkte
+        Aufgabe4_Movies.loesung();            // 20 Punkte
     }
 }
 

@@ -111,7 +111,7 @@ public class Aufgabe3_Textanalyse {
         liste3 = liste3.reversed();
         int count = 20;
         for (Map.Entry<String, Integer> eintrag : liste3) {
-            System.out.println(eintrag.getKey() + ", " + eintrag.getValue());
+            System.out.println(eintrag.getKey() + " - " + eintrag.getValue());
             count--;
             if (count <= 0) {
                 break;
