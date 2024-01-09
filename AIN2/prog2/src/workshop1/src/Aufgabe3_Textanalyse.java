@@ -12,18 +12,16 @@ public class Aufgabe3_Textanalyse {
         // Ergänzen Sie die Funktion einlesen so, dass die eingelesenen Wörter als Liste zurückgeliefert werden.
         System.out.println("\nAufgabe 3a (4P):");
         long start = System.nanoTime(); // aktuelle Zeit in nsec
-        List<String> lst_Kafka = einlesen("data/Kafka_Der_Prozess.txt");
+        List<String> lst_Kafka = einlesen("/home/selin/AIN2/prog2/src/workshop1/data/Kafka_Der_Prozess.txt");
         System.out.println("Benötigte Zeit in msec: " + (double)(System.nanoTime()-start)/1.0e06);
 
         // Geben Sie die Anzahl der eingelesenen Wörter aus. Benutzen Sie dazu Ihre eingelesene Liste.
-        // Ihr Code: ...
         int size = lst_Kafka.size();
         System.out.println(size);
 
 
         // Sortieren Sie die Liste und geben Sie die ersten 100 Wörter aus.
         start = System.nanoTime();
-        // Ihr Code: ...
         System.out.println("Benötigte Zeit in msec: " + (double)(System.nanoTime()-start)/1.0e06);
         Collections.sort(lst_Kafka);
         for (int i = 0; i < 100; ++i) {
@@ -32,7 +30,6 @@ public class Aufgabe3_Textanalyse {
 
         // Speichern Sie die Liste in eine TreeSet und geben Sie ersten die 100  Wörter aus.
         // Berücksichtigen Sie die Konstruktoren der Klasse TreeSet!
-        // Ihr Code: ...
         Set<String> set_kafka = new TreeSet<>(lst_Kafka);
         int count = 100;
         for (String s : set_kafka){
@@ -53,9 +50,7 @@ public class Aufgabe3_Textanalyse {
         start = System.nanoTime();
         SortedMap<String, Integer> fqTable_Kafka = ermittleHaeufigkeiten(lst_Kafka);
         System.out.println("Benötigte Zeit in msec: " + (double)(System.nanoTime()-start)/1.0e06);
-        // Ihr Code: ...
-        for (Map.Entry<String, Integer> eintrag
-                : fqTable_Kafka.subMap("Ver", "Ves").entrySet()) {
+        for (Map.Entry<String, Integer> eintrag : fqTable_Kafka.subMap("Ver", "Ves").entrySet()) {
             System.out.println(eintrag.getKey() + "," + eintrag.getValue());
         }
         TwentyMostFrequent(fqTable_Kafka);
@@ -71,15 +66,11 @@ public class Aufgabe3_Textanalyse {
 
         start = System.nanoTime();
         // word_list_german_spell_checked.txt einlesen:
-        // Ihr Code: ..
-        List<String> lst_Deutsch = einlesen("/home/fabian/htwg/Prog2/src/Workshop1_2023_Collections/data/word_list_german_spell_checked.txt");
+        List<String> lst_Deutsch = einlesen("/home/selin/AIN2/prog2/src/workshop1/data/deutsch.txt");
 
         Set<String> ww = new TreeSet<>(lst_Deutsch);
-
-
         System.out.println("Benötigte Zeit in msec: " + (double)(System.nanoTime()-start)/1.0e06);
-        // Ihr Code:
-        // ...
+
         Map<String, Integer> fqTable_falsch = new HashMap<>();
         for (String s : lst_Kafka) {
             if (!ww.contains(s)){
@@ -101,8 +92,7 @@ public class Aufgabe3_Textanalyse {
         // Wieviel unterschiedliche gemeinsame Wörter gibt es?
         // Geben Sie die 20 häufigsten gemeinsamen Wörter (mit ihren Häufigkeiten) aus.
         System.out.println("\nAufgabe 3d (3P):");
-        // Ihr Code:
-        List<String> lst_Harry = einlesen("data/Harry_Potter_und_der_Stein_der_Weisen.txt");
+        List<String> lst_Harry = einlesen("/home/selin/AIN2/prog2/src/workshop1/data/Harry_Potter_und_der_Stein_der_Weisen.txt");
         SortedMap<String, Integer> fqTable_Harry = ermittleHaeufigkeiten(lst_Harry);
         Map<String, Integer> fqTable_Kafka_Harry = new HashMap<>(fqTable_Harry);
         for (Map.Entry<String, Integer> eintrag : fqTable_Kafka.entrySet()) {
@@ -133,7 +123,6 @@ public class Aufgabe3_Textanalyse {
         LineNumberReader in = new LineNumberReader(new FileReader(fileName, StandardCharsets.UTF_8));
         List<String> list = new ArrayList<>();
         String line;
-
         while ((line = in.readLine()) != null) {
             String[] wf = line.split("[^a-z^A-Z^ß^ä^ö^ü^Ä^Ö^Ü]+");
             for (String w: wf) {
@@ -146,9 +135,7 @@ public class Aufgabe3_Textanalyse {
     }
 
     private static SortedMap<String, Integer> ermittleHaeufigkeiten(List<String> wListe)  {
-        // Ihr Code:
         SortedMap<String, Integer> map = new TreeMap<>();
-
         for (String s : wListe){
             if (!map.containsKey(s)){
                 map.put(s, 1);

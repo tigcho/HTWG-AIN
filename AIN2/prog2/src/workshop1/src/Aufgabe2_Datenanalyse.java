@@ -13,25 +13,22 @@ public class Aufgabe2_Datenanalyse {
         // Die gegebene statische Methode einlesen liest alle Landkreise in eine Liste ein.
         // Geben Sie die Liste (jeder Landkreis in eine Zeile) aus und bestimmen Sie die Anzahl der Landkreise.
         System.out.println("\nAufgabe 2a (2P):");
-        // Ihr Code
-        List<Landkreis> lk = einlesen("data/12411-0017-KREISE_$F.csv");
-        for (Landkreis k : lk) {
+        List<Landkreis> lk = einlesen("/home/selin/AIN2/prog2/src/workshop1/data/12411-0017-KREISE_$F.csv");
+        for (Landkreis k : lk) { // oder var statt Landkreis
             System.out.println(k);
         }
 
         // b) (2P)
         // Sortieren Sie die Liste nach dem Namen und geben Sie die Liste (jeder Landkreis in eine Zeile) aus:
         System.out.println("\nAufgabe 2b (2P):");
-        // Ihr Code
         lk.sort((k1, k2) -> k1.name().compareTo(k2.name()));
         for (Landkreis k : lk) {
-            System.out.println(k);
+            System.out.println(k.name());
         }
 
         // c) (2P)
         // Sortieren Sie die Liste absteigend nach der Einwohnerzahl und geben Sie die Liste (jeder Landkreis in eine Zeile) aus:
         System.out.println("\nAufgabe 2c (2P):");
-        // Ihr Code
         lk.sort((k1, k2) -> k2.anzahlEinwohner() - k1.anzahlEinwohner());
         for (Landkreis k : lk) {
             System.out.println(k);
@@ -42,7 +39,6 @@ public class Aufgabe2_Datenanalyse {
         // Geben Sie für alle mit 'K' beginnenden Landkreise den Namen und die Einwohnerzahl aus.
         // Benutzen Sie dazu subMap!
         System.out.println("\nAufgabe 2d (3P):");
-        // Ihr Code
         NavigableMap<String, Integer> mp = new TreeMap<>();
         for (Landkreis k : lk) {
             mp.put(k.name(), k.anzahlEinwohner());
@@ -56,9 +52,8 @@ public class Aufgabe2_Datenanalyse {
         // e) (1P)
         // Geben Sie die Menge (Set) aller Landkreisnamen aus:
         System.out.println("\nAufgabe 2e (1P):");
-        // Ihr Code
-        Set<String> s = mp.keySet();
-        System.out.println(s);
+        Set<String> lkname = mp.keySet();
+        System.out.println(lkname);
     }
 
     private static List<Landkreis> einlesen(String fn) throws IOException {
@@ -83,7 +78,6 @@ public class Aufgabe2_Datenanalyse {
                 ewz = lineScanner.nextInt();
             kreiseBRD.add(new Landkreis(name,plz,ewz));
         }
-
         return kreiseBRD;
     }
 }
