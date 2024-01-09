@@ -44,7 +44,7 @@ public class Aufgabe2_Datenanalyse {
             mp.put(k.name(), k.anzahlEinwohner());
             System.out.println(k);
             for (Map.Entry<String, Integer> entry : mp.subMap("K", true, "L", false).entrySet()) {
-                System.out.println(entry.getKey() + ": " + entry.getValue());
+                System.out.println(entry.getKey() + " - " + entry.getValue());
             }
         }
 
