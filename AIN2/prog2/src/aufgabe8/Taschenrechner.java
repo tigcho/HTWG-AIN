@@ -9,7 +9,7 @@ public class Taschenrechner {
         frame.setContentPane(panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(400, 500);
+        frame.setSize(420, 500);
         frame.setResizable(false);
         frame.setVisible(true);
     }
