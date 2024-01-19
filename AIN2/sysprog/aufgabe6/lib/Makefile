@@ -1,14 +1,14 @@
 #----------------------------------- Kommando-Variablen
 CXX = g++
 CPPFLAGS = -I.
-CXXFLAGS = -g -Wall -Wextra -Werror -std=c++11 -pedantic
+CXXFLAGS = -g -Wall -Wextra -Werror -std=c++11 -fPIC -pedantic
 RM = rm -f
 STATIC = ar rvs
 DYNAMIC = -shared
 
 #--------------------------------------- Hilfsvariablen
 LIBNAME = aufgabe6
-
+LIBTYPE = a
 TARGET = lib$(LIBNAME)
 OBJECTS = \
     benotung.o \
@@ -28,16 +28,17 @@ LIBS = \
 #---------------------------------------- Standardziele
 .PHONY: all clean
 
-all: $(LIBS)
+all: $(TARGET).$(LIBTYPE)
+
 clean:
-	$(RM) $(OBJECTS) $(LIBS) depend
+	$(RM) $(OBJECTS) $(TARGET).a $(TARGET).so depend
 depend: $(SOURCES) $(HEADERS)
 	$(CXX) -c $(CPPFLAGS) -MM $(SOURCES) > $@
 
 #--------------------------------------- Ziele zur Programmerstellung
-$(TARGET): $(TARGET).a $(OBJECTS)
+$(TARGET).a: $(OBJECTS)
 	$(STATIC) $@ $^
-$(TARGET): $(TARGET).so $(OBJECTS)
+$(TARGET).so: $(OBJECTS)
 	$(CXX) $(DYNAMIC) $^ -o $@
 
 #-------------------------------------- Abhaengigkeiten
