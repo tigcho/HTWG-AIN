@@ -1,18 +1,23 @@
 #----------------------------------- Kommando-Variablen
 CXX = g++
-CPPFLAGS = -I.
-CXXFLAGS = -g -Wall -Wextra -Werror -std=c++11 -pedantic
+CPPFLAGS = -I$(LIB)
+CXXFLAGS = -g -fPIC -Wall -Wextra -Werror -std=c++11 -pedantic
 RM = rm -f
-LDFLAGS = -L../lib -laufgabe6
+LDFLAGS = -L$(LIB)
 
 #--------------------------------------- Hilfsvariablen
 LIBNAME = aufgabe6
 LIB = ../lib
+LIBTYPE = a
 
 TARGET = notenspiegel
-OBJECTS = $(TARGET).o
+OBJECTS = \
+		$(TARGET).o
 SOURCES = $(OBJECTS:.o=.cpp)
-HEADERS = $(LIB)/$(OBJECTS:.o=.h)
+HEADERS = $(LIB)/fachnoten_liste.h \
+		  $(LIB)/fachnote.h \
+		  $(LIB)/benotung.h
+
 
 #----------------------------------------- Musterregeln
 %.o: %.cpp
@@ -28,8 +33,8 @@ depend: $(SOURCES) $(HEADERS)
 	$(CXX) $(CPPFLAGS) -MM $(SOURCES) > $@
 
 #--------------------------------------- Ziele zur Programmerstellung
-$(TARGET): $(TARGET).o $(OBJECTS)
-	$(CXX) $(CPPFLAGS) -o $@ $^ $(LDFLAGS)
+$(TARGET): $(OBJECTS) $(LIB)/lib$(LIBNAME).$(LIBTYPE)
+	$(CXX) -o $@ $< $(LDFLAGS) -l$(LIBNAME)
 
 #-------------------------------------- Abhaengigkeiten
 include depend
