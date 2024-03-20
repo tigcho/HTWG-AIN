@@ -1,5 +1,4 @@
-[]: # Title: Chapter 4: The Process
-[]: # Date: 2024-03-20
+# Questions
 
 1. Run process-run.py with the following flags: -l 5:100,5:100 (two processes which consist of 5 instructions that use the CPU 100%).
    What should the CPU utilization be (e.g., the percent of time the CPU is in use?)
