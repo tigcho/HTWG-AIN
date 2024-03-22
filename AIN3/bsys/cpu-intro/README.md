@@ -31,7 +31,7 @@ is done.
 
 -----------------------------
 
-2. Now run with these flags: ./process-run.py -l 4:100,1:0.
+2. Now run with these flags: `./process-run.py -l 4:100,1:0`.
    How long does it take to complete both processes?
 
 - 11 clock ticks. PID 0 will run for 4 clock ticks while initiating and finishing an IO process will take 2 clock ticks.
@@ -59,7 +59,7 @@ Stats: IO Busy  5 (45.45%)
 
 ----------------------------
 
-3. Switch the order of the processes: -l 1:0,4:100. What happens now? Does switching the order matter? Why?
+3. Switch the order of the processes: `-l 1:0,4:100`. What happens now? Does switching the order matter? Why?
 
 - The order matters because PID 0 is now blocked, waiting for the IO request to finish, while PID 1 will use the CPU.
 
@@ -81,7 +81,7 @@ Stats: IO Busy  5 (71.43%)
 
 ----------------------------
 
-4. What happens when you run the following two processes (-l 1:0,4:100 -c -S SWITCH ON END)
+4. What happens when you run the following two processes `-l 1:0,4:100 -c -S SWITCH ON END`
 
 - Since the process will only switch upon completion, resources are not used efficiently. PID 0 will be blocked for 5 clock ticks
   while PID 1 is on the ready state, not doing anything.
@@ -105,7 +105,7 @@ Time        PID: 0        PID: 1           CPU           IOs
 ----------------------------
 
 5. Now, run the same processes, but with the switching behavior set to switch to another process 
-   whenever one is WAITING for I/O (-l 1:0,4:100 -c -S SWITCH ON IO). What happens now?
+   whenever one is WAITING for I/O (`-l 1:0,4:100 -c -S SWITCH ON IO`). What happens now?
 
 - This results in a more efficient use of resources, clearing up the issue of Question 4. 
 
@@ -127,11 +127,11 @@ Stats: IO Busy  5 (71.43%)
 
 ----------------------------
 
-6. What happens when you run this combination of processes? (./process-run.py -l 3:0,5:100,5:100,5:100 -S 
-   SWITCH ON IO -c -p -I IO RUN LATER) Are system resources being effectively utilized?
+6. What happens when you run this combination of processes? `./process-run.py -l 3:0,5:100,5:100,5:100 -S 
+   SWITCH ON IO -c -p -I IO RUN LATER`
+   Are system resources being effectively utilized?
 
-- No, because the IO process is set to "run later". The next three CPU process happen right after another, and only then another
-  two IO processes are initiated, setting the CPU in an idle state.
+- No, because the IO process is set to "run later". The next three CPU process happen right after another, and only then another two IO processes are initiated, setting the CPU in an idle state.
 
 Output:
 ```sh
@@ -175,7 +175,7 @@ Stats: IO Busy  15 (48.39%)
 
 ----------------------------
 
-7. Now run the same processes, but with -I IO RUN IMMEDIATE set, which immediately runs the process 
+7. Now run the same processes, but with `-I IO RUN IMMEDIATE` set, which immediately runs the process 
    that issued the I/O. How does this behavior differ? Why might running a process that just completed 
    an I/O again be a good idea?
 
@@ -214,8 +214,8 @@ Stats: IO Busy  15 (71.43%)
 
 ----------------------------
 
-8. -s 1 -l 3:50,3:50.
--I IO RUN IMMEDIATE vs -I IO RUN LATER
+8. `-s 1 -l 3:50,3:50`
+`-I IO RUN IMMEDIATE vs -I IO RUN LATER`
 
 - Same thing.
 
@@ -243,7 +243,7 @@ Stats: CPU Busy 8 (53.33%)
 Stats: IO Busy  10 (66.67%)
 ```
 
--S SWITCH ON IO vs -S SWITCH ON END
+`-S SWITCH ON IO vs -S SWITCH ON END`
 
 - SWITCH ON IO gives the same result. SWITCH ON END is way worse.
 
@@ -274,8 +274,8 @@ Stats: CPU Busy 8 (44.44%)
 Stats: IO Busy  10 (55.56%)
 ```
 
--s 2 -l 3:50,3:50.
--I IO RUN IMMEDIATE vs IO RUN LATER
+`-s 2 -l 3:50,3:50`.
+`-I IO RUN IMMEDIATE vs IO RUN LATER`
 
 - Same thing.
 
@@ -304,7 +304,7 @@ Stats: CPU Busy 10 (62.50%)
 Stats: IO Busy  14 (87.50%)
 ```
 
--S SWITCH ON IO vs SWITCH ON END
+`-S SWITCH ON IO vs SWITCH ON END`
 
 - SWITCH ON IO gives the same result SWITCH ON END is way worse.
 
@@ -369,7 +369,3 @@ There are a few other important flags:
     - IO_RUN_LATER: switch to this process when it is natural to 
       (e.g., depending on process-switching behavior)
 ```
-
-
-
-
