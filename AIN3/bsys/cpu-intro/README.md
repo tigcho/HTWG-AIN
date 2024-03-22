@@ -1,6 +1,6 @@
 # Questions
 
-1. Run process-run.py with the following flags: -l 5:100,5:100 (two processes which consist of 5 instructions that use the CPU 100%).
+1. Run process-run.py with the following flags: `-l 5:100,5:100` (two processes which consist of 5 instructions that use the CPU 100%).
    What should the CPU utilization be (e.g., the percent of time the CPU is in use?)
 
 - 100% because of the given flags and no IO process initiated. After PID 0 is done, PID 1 will start immediately.
@@ -214,11 +214,138 @@ Stats: IO Busy  15 (71.43%)
 
 ----------------------------
 
-8. 
+8. -s 1 -l 3:50,3:50.
+-I IO RUN IMMEDIATE vs -I IO RUN LATER
 
+- Same thing.
 
+Output:
+```sh
+Time        PID: 0        PID: 1           CPU           IOs
+  1        RUN:cpu         READY             1          
+  2         RUN:io         READY             1          
+  3        BLOCKED       RUN:cpu             1             1
+  4        BLOCKED       RUN:cpu             1             1
+  5        BLOCKED       RUN:cpu             1             1
+  6        BLOCKED          DONE                           1
+  7        BLOCKED          DONE                           1
+  8*   RUN:io_done          DONE             1          
+  9         RUN:io          DONE             1          
+ 10        BLOCKED          DONE                           1
+ 11        BLOCKED          DONE                           1
+ 12        BLOCKED          DONE                           1
+ 13        BLOCKED          DONE                           1
+ 14        BLOCKED          DONE                           1
+ 15*   RUN:io_done          DONE             1          
 
+Stats: Total Time 15
+Stats: CPU Busy 8 (53.33%)
+Stats: IO Busy  10 (66.67%)
+```
 
+-S SWITCH ON IO vs -S SWITCH ON END
+
+- SWITCH ON IO gives the same result. SWITCH ON END is way worse.
+
+Output for -S SWITCH ON END:
+```sh
+Time        PID: 0        PID: 1           CPU           IOs
+  1        RUN:cpu         READY             1          
+  2         RUN:io         READY             1          
+  3        BLOCKED         READY                           1
+  4        BLOCKED         READY                           1
+  5        BLOCKED         READY                           1
+  6        BLOCKED         READY                           1
+  7        BLOCKED         READY                           1
+  8*   RUN:io_done         READY             1          
+  9         RUN:io         READY             1          
+ 10        BLOCKED         READY                           1
+ 11        BLOCKED         READY                           1
+ 12        BLOCKED         READY                           1
+ 13        BLOCKED         READY                           1
+ 14        BLOCKED         READY                           1
+ 15*   RUN:io_done         READY             1          
+ 16           DONE       RUN:cpu             1          
+ 17           DONE       RUN:cpu             1          
+ 18           DONE       RUN:cpu             1          
+
+Stats: Total Time 18
+Stats: CPU Busy 8 (44.44%)
+Stats: IO Busy  10 (55.56%)
+```
+
+-s 2 -l 3:50,3:50.
+-I IO RUN IMMEDIATE vs IO RUN LATER
+
+- Same thing.
+
+Output:
+```sh
+Time        PID: 0        PID: 1           CPU           IOs
+  1         RUN:io         READY             1          
+  2        BLOCKED       RUN:cpu             1             1
+  3        BLOCKED        RUN:io             1             1
+  4        BLOCKED       BLOCKED                           2
+  5        BLOCKED       BLOCKED                           2
+  6        BLOCKED       BLOCKED                           2
+  7*   RUN:io_done       BLOCKED             1             1
+  8         RUN:io       BLOCKED             1             1
+  9*       BLOCKED   RUN:io_done             1             1
+ 10        BLOCKED        RUN:io             1             1
+ 11        BLOCKED       BLOCKED                           2
+ 12        BLOCKED       BLOCKED                           2
+ 13        BLOCKED       BLOCKED                           2
+ 14*   RUN:io_done       BLOCKED             1             1
+ 15        RUN:cpu       BLOCKED             1             1
+ 16*          DONE   RUN:io_done             1          
+
+Stats: Total Time 16
+Stats: CPU Busy 10 (62.50%)
+Stats: IO Busy  14 (87.50%)
+```
+
+-S SWITCH ON IO vs SWITCH ON END
+
+- SWITCH ON IO gives the same result SWITCH ON END is way worse.
+
+Output for -S SWITCH ON END:
+```sh
+Time        PID: 0        PID: 1           CPU           IOs
+  1         RUN:io         READY             1          
+  2        BLOCKED         READY                           1
+  3        BLOCKED         READY                           1
+  4        BLOCKED         READY                           1
+  5        BLOCKED         READY                           1
+  6        BLOCKED         READY                           1
+  7*   RUN:io_done         READY             1          
+  8         RUN:io         READY             1          
+  9        BLOCKED         READY                           1
+ 10        BLOCKED         READY                           1
+ 11        BLOCKED         READY                           1
+ 12        BLOCKED         READY                           1
+ 13        BLOCKED         READY                           1
+ 14*   RUN:io_done         READY             1          
+ 15        RUN:cpu         READY             1          
+ 16           DONE       RUN:cpu             1          
+ 17           DONE        RUN:io             1          
+ 18           DONE       BLOCKED                           1
+ 19           DONE       BLOCKED                           1
+ 20           DONE       BLOCKED                           1
+ 21           DONE       BLOCKED                           1
+ 22           DONE       BLOCKED                           1
+ 23*          DONE   RUN:io_done             1          
+ 24           DONE        RUN:io             1          
+ 25           DONE       BLOCKED                           1
+ 26           DONE       BLOCKED                           1
+ 27           DONE       BLOCKED                           1
+ 28           DONE       BLOCKED                           1
+ 29           DONE       BLOCKED                           1
+ 30*          DONE   RUN:io_done             1          
+
+Stats: Total Time 30
+Stats: CPU Busy 10 (33.33%)
+Stats: IO Busy  20 (66.67%)
+```
 
 
 There are a few other important flags:
