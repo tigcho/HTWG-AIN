@@ -12,6 +12,7 @@ int main() {
         printf("hello\n");
     
     } else {
+        sleep(1);
         printf("goodbye\n");
     }
     return 0;
