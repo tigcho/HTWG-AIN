@@ -47,10 +47,30 @@ Child process after changing x: 200
    execvpe(). Why do you think there are so many variants of the same
    basic call?
 
-- 
+- Look them up [here](https://www.man7.org/linux/man-pages/man3/exec.3.html).
+  They are almost identical, but their arguments differ from each other.
 
+---------------------------------
 
+5. Now write a program that uses wait() to wait for the child process
+   to finish in the parent. What does wait() return? What happens if
+   you use wait() in the child?
 
+- If I use it in the child, it returns `-1` because there is no child process
+  to wait for. In the parent process, it returns the child's PID.
 
+---------------------------------
 
+6. Write a slight modification of the previous program, this time 
+   using waitpid() instead of wait(). When would waitpid() be
+   useful?
 
+- It's useful when you want to wait on a child process with a specific PID.
+
+---------------------------------
+
+7. Write a program that creates a child process, and then in the child
+   closes standard output (STDOUT FILENO). What happens if the child
+   calls printf() to print some output after closing the descriptor?
+
+- Nothing happens.
