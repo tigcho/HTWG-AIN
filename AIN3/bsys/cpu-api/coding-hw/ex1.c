@@ -7,17 +7,18 @@ int main(int argc, char *argv[]) {
     int rc = fork();
 
     if (rc < 0) {
-	fprintf(stderr, "fork failed\n");
-
+	      fprintf(stderr, "fork failed\n");
+        exit(1);
+    
     } else if (rc == 0) {
-	printf("Child process before changing x: %d\n", x);
-	x = 200;
-	printf("Child process after changing x: %d\n", x);
+	      printf("Child process before changing x: %d\n", x);
+	      x = 200;
+	      printf("Child process after changing x: %d\n", x);
 
     } else {
-	printf("Parent process before changing x: %d\n", x);
-	x = 300;
-	printf("Parent process after changing x: %d\n", x);
+	      printf("Parent process before changing x: %d\n", x);
+	      x = 300;
+	      printf("Parent process after changing x: %d\n", x);
     }
     return 0;
 }
