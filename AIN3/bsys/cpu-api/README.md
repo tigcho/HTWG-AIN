@@ -1,4 +1,3 @@
-
 # Questions 
 
 There are now two simulators related to this chapter. The first,
@@ -152,15 +151,15 @@ Action: c EXITS
 Action: a forks d
 
                         Final Process Tree?
-			       a
+			                   a
                                └── d
 ```
 
 ---------------------------------
 
 6. Finally, use both -t and -F together. This shows the final process
-   tree, but then asks you to fill in the actions that took place. By look-
-   ing at the tree, can you determine the exact actions that took place?
+   tree, but then asks you to fill in the actions that took place. By looking 
+   at the tree, can you determine the exact actions that took place?
    In which cases can you tell? In which can’t you tell?
 
 - You can generally guess the actions which lead to the final tree, but 
