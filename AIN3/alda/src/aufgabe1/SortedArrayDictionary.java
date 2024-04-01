@@ -7,21 +7,21 @@ public class SortedArrayDictionary<K extends Comparable<? super K>, V> implement
  
     static private class Entry<K, V> {
         K key;
-	V value;
-	Entry(K k, V v) {
-	    key = k;
-	    value = v;
-	};
+	      V value;
+	      Entry(K k, V v) {
+	      key = k;
+	      value = v;
+	  };
 
-	private static final int DEF_CAPACITY = 16;
-	private int size;
-	private Entry<K, V>[] data;
+	  private static final int DEF_CAPACITY = 16;
+	  private int size;
+	  private Entry<K, V>[] data;
 
-	@SuppressWarnings("unchecked")
-	public SortedArrayDictionary() {
+	  @SuppressWarnings("unchecked")
+  	public SortedArrayDictionary() {
 	    size = 0;
 	    data = new Entry[DEF_CAPACITY];
-	}
+	  }
 
-	public V search(K key) {
+	  public V search(K key) {
 	    int i = searchKey
