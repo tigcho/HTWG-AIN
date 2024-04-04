@@ -163,10 +163,112 @@ valgrind:
    valgrind on it?
 
 - The program runs fine but when we run valgrind with --leak-check=yes flag, it tells us that we have an invalid read of size 4. 
-  The program is not correct because we are trying to access an element of the array after freeing it.
+  The program is not correct because we are trying to access an element of the array after freeing it. 
 
 valgrind:
 ```sh
+==50253== Memcheck, a memory error detector
+==50253== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==50253== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==50253== Command: ./array2
+==50253== 
+==50253== Invalid read of size 4
+==50253==    at 0x1091B3: main (array2.c:7)
+==50253==  Address 0x4a9c040 is 0 bytes inside a block of size 40 free'd
+==50253==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==50253==    by 0x1091AE: main (array2.c:6)
+==50253==  Block was alloc'd at
+==50253==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==50253==    by 0x10919E: main (array2.c:5)
+==50253== 
+0
+==50253== 
+==50253== HEAP SUMMARY:
+==50253==     in use at exit: 0 bytes in 0 blocks
+==50253==   total heap usage: 2 allocs, 2 frees, 1,064 bytes allocated
+==50253== 
+==50253== All heap blocks were freed -- no leaks are possible
+==50253== 
+==50253== For lists of detected and suppressed errors, rerun with: -s
+==50253== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+```
+-----------------------------------
+
+7. Now pass a funny value to free (e.g., a pointer in the middle of the
+   array you allocated above). What happens? Do you need tools to
+   find this type of problem?
+
+- The program runs fine but when we run valgrind with --leak-check=yes flag, it tells us that we have an invalid free. 
+  The program is not correct because we are trying to free an element of the array which is not the first element. 
+
+valgrind:
+```sh
+==53875== Memcheck, a memory error detector
+==53875== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==53875== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==53875== Command: ./array2
+==53875== 
+==53875== Invalid write of size 4
+==53875==    at 0x10918D: main (array2.c:7)
+==53875==  Address 0x4a9c108 is 88 bytes inside an unallocated block of size 4,194,096 in arena "client"
+==53875== 
+==53875== Invalid read of size 4
+==53875==    at 0x1091AB: main (array2.c:9)
+==53875==  Address 0x4a9c108 is 88 bytes inside an unallocated block of size 4,194,096 in arena "client"
+==53875== 
+10
+==53875== 
+==53875== HEAP SUMMARY:
+==53875==     in use at exit: 40 bytes in 1 blocks
+==53875==   total heap usage: 2 allocs, 1 frees, 1,064 bytes allocated
+==53875== 
+==53875== 40 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==53875==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==53875==    by 0x10917E: main (array2.c:5)
+==53875== 
+==53875== LEAK SUMMARY:
+==53875==    definitely lost: 40 bytes in 1 blocks
+==53875==    indirectly lost: 0 bytes in 0 blocks
+==53875==      possibly lost: 0 bytes in 0 blocks
+==53875==    still reachable: 0 bytes in 0 blocks
+==53875==         suppressed: 0 bytes in 0 blocks
+==53875== 
+==53875== For lists of detected and suppressed errors, rerun with: -s
+==53875== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 0 from 0)
+```
+-----------------------------------
+
+8. Try out some of the other interfaces to memory allocation. 
+   For example, create a simple vector-like data structure and 
+   related routines that use realloc() to manage the vector. 
+   Use an array to store the vectors elements; when a user adds 
+   an entry to the vector, use realloc() to allocate more space 
+   for it. How well does such a vector perform? How does it 
+   compare to a linked list? Use valgrind to help you find bugs.
+
+- The vector-like data structure performs well. It is faster than a linked list because it uses contiguous memory. 
+  The linked list has to traverse the list to find the element, while the vector can access the element directly. 
+  The vector is faster for random access but slower for insertion and deletion. The linked list is slower for random access 
+  but faster for insertion and deletion. 
+
+valgrind:
+```sh
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
