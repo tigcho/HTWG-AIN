@@ -7,28 +7,29 @@ int main(int argc, char *argv[])
 {
     if (argc != 3)
     {
-	printf("Usage: %s <memory in mb> <time in seconds>\n", argv[0]);
-	return 1;
+    printf("Usage: %s <memory in mb> <time in seconds>\n", argv[0]);
+    return 1;
     }
 
-    int memory = atoi(argv[1]);
+    size_t memory = atoi(argv[1]);
     int time = atoi(argv[2]);
 
-    int *array = malloc(memory * 1024 * 1024);
+    int *array = (int*) malloc(memory * 1024 * 1024 * sizeof(int));
     if (array == NULL)
     {
-	printf("Failed to allocate memory\n");
-	return 1;
+    printf("Failed to allocate memory\n");
+    return 1;
     }
 
+    int i = 0;
     while (1)
     {
-	for (int i = 0; i < memory * 1024 * 1024 / sizeof(int); i++)
+        if (i == memory * 1024 * 1024 / sizeof(int))
 	{
-	    array[i] = i;
+	    i = 0;
 	}
-	sleep(1);
+	array[i] = i;
+	i++;
     }
-
     return 0;
 }

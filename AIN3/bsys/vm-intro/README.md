@@ -8,10 +8,19 @@ Output:
 ```sh
 ❯ free -t -m
                total        used        free      shared  buff/cache   available
-Mem:           15907        3149        9922          63        2835       12373
+Mem:           15907        1347       12762          22        1797       14223
 Swap:           2047           0        2047
-Total:         17955        3149       11970
+Total:         17955        1347       14810
 ```
 -----------------------------
 
-3. 
+3. `❯ ./memory-user 100 5`
+
+Output:
+```sh
+❯ free -t -m
+               total        used        free      shared  buff/cache   available
+Mem:           15907        1500       12608          24        1799       14069
+Swap:           2047           0        2047
+Total:         17955        1500       14656
+```
