@@ -11,6 +11,8 @@ int main(int argc, char *argv[])
     return 1;
     }
 
+    printf("PID: %d\n", getpid());
+
     size_t memory = atoi(argv[1]);
     int time = atoi(argv[2]);
 
