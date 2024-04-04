@@ -236,43 +236,4 @@ valgrind:
 ==53875== For lists of detected and suppressed errors, rerun with: -s
 ==53875== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 0 from 0)
 ```
------------------------------------
-
-8. Try out some of the other interfaces to memory allocation. 
-   For example, create a simple vector-like data structure and 
-   related routines that use realloc() to manage the vector. 
-   Use an array to store the vectors elements; when a user adds 
-   an entry to the vector, use realloc() to allocate more space 
-   for it. How well does such a vector perform? How does it 
-   compare to a linked list? Use valgrind to help you find bugs.
-
-- The vector-like data structure performs well. It is faster than a linked list because it uses contiguous memory. 
-  The linked list has to traverse the list to find the element, while the vector can access the element directly. 
-  The vector is faster for random access but slower for insertion and deletion. The linked list is slower for random access 
-  but faster for insertion and deletion. 
-
-valgrind:
-```sh
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
