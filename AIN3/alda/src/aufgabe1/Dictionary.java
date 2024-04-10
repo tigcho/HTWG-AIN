@@ -1,6 +1,17 @@
-package aufgabe1;
+// O. Bittel
+// 26.09.2022
+
+package dictionary;
+
 import java.util.Iterator;
 
+/**
+ * Collection of entries.
+ * @author oliverbittel
+ * @since 22.02.2017
+ * @param <K> the type of keys maintained by this map.
+ * @param <V> the type of mapped values.
+ */
 public interface Dictionary<K,V> extends Iterable<Dictionary.Entry<K,V>> {
 	/**
 	 * Associates the specified value with the specified key in this map.
