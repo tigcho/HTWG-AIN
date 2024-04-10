@@ -23,7 +23,7 @@ public class TUI {
     }
 
     private static void commands(String command) throws Exception {
-        String args[] = command.split(" ");
+        String[] args = command.split(" ");
 
         switch (args[0]) {
             case "create":
@@ -65,13 +65,13 @@ public class TUI {
     private static void create(String[] args) {
         System.out.println("Creating new Dictionary");
         if (args[0].equals("HashDictionary")) {
-            dic = new HashDictionary(3);
+            dic = new HashDictionary<>(3);
         }
         else if (args[0].equals("BinaryTreeDictionary")) {
             dic = new BinaryTreeDictionary<>();
         }
         else {
-            dic = new SortedArrayDictionary();
+            dic = new SortedArrayDictionary<>();
         }
     }
 
@@ -80,7 +80,7 @@ public class TUI {
             System.out.println(v.getKey() + ": " + v.getValue());
     }
 
-    private static void read(String args[]) throws IOException {
+    private static void read(String[] args) throws IOException {
 
         long start = 0;
         long stop = 0;
@@ -92,7 +92,7 @@ public class TUI {
                 start = System.nanoTime();
                 String line = rd.readLine();
                 while (line != null) {
-                    String entry[] = line.split(" ");
+                    String[] entry = line.split(" ");
                     dic.insert(entry[0], entry[1]);
                     line = rd.readLine();
                 }
