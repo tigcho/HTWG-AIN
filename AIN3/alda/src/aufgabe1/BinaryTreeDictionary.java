@@ -1,6 +1,5 @@
-package dictionary;
+package aufgabe1;
 
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -23,6 +22,11 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
             parent = null;
         }
     }
+
+    private static class MinEntry<K, V> {
+        K key;
+        V value;
+    }
     
     private Node<K, V> root = null;
     private int size = 0;
@@ -34,7 +38,7 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
         if (root != null) { // binary tree is not empty
             root.parent = null; // root has no parent
         }
-        return oldValue
+        return oldValue;
     }
 
     /*
@@ -90,11 +94,93 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
             return null;
         } else if (key.compareTo(p.key) < 0) {
             return searchR(key, p.left);
-        } else if (key.compareTo(p.right) > 0) {
-            return searchR
+        } else if (key.compareTo(p.key) > 0) {
+            return searchR(key, p.right);
+        } else {
+            return p.value;
         }
     }
 
+    @Override
+    public V remove(K key) {
+        root = removeR(key, root);
+        return oldValue;
+    }
+
+    private Node<K, V> removeR(K key, Node<K, V> p) {
+        if (p == null) {
+            oldValue = null;
+        } else if (key.compareTo(p.key) < 0) {
+            p.left = removeR(key, p.left);
+        } else if (key.compareTo(p.key) > 0) {
+            p.right = removeR(key, p.right);
+        } else if (p.left == null || p.right == null) { // Node to be removed has 0 or 1 child
+            oldValue = p.value;
+            p = (p.left != null) ? p.left : p.right; // p is replaced by its child
+        } else {
+            MinEntry<K, V> min = new MinEntry<K, V>();
+            p.right = getRemMinR(p.right, min); // get the smallest Node in the right subtree
+            oldValue = p.value;
+            p.key = min.key;
+            p.value = min.value;
+        }
+        return p;
+    }
+
+    private Node<K, V> getRemMinR(Node<K, V> p, MinEntry<K, V> min) {
+        if (p.left == null) {
+            min.key = p.key;
+            min.value = p.value;
+            p = p.right;
+        } else {
+            p.left = getRemMinR(p.left, min);
+        }
+        return p;
+    }
+
+    @Override
+    public int size () {
+        return size;
+    }
+
+    private Node<K, V> leftMostDescendant(Node<K, V> p) {
+        if (p == null) {
+            return null;
+        }
+        while (p.left != null) {
+            p = p.left;
+        }
+        return p;
+    }
+
+    private Node<K, V> parentOfRightMostAncestor(Node<K, V> p) {
+        if (p == null) {
+            return null;
+        }
+        while (p.parent != null && p.parent.right == p) {
+            p = p.parent;
+        }
+        return p.parent;
+    }
+
+    @Override
+    public Iterator<Entry<K, V>> iterator() {
+        return new Iterator<>() {
+            Node<K, V> p = leftMostDescendant(root);
+            @Override
+            public boolean hasNext() {
+                return p.right != null || parentOfRightMostAncestor(p) != null;
+            }
+            @Override
+            public Entry<K, V> next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                p = (p.right != null) ? leftMostDescendant(p.right) : parentOfRightMostAncestor(p);
+                return new Entry<>(p.key, p.value);
+            }
+        };
+    }
     
     public void prettyPrint() {
         printR(0, root);
