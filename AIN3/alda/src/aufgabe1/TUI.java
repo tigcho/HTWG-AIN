@@ -25,10 +25,14 @@ public class TUI {
 
         switch (args[0]) {
             case "create":
+                if (args.length < 2)
+                    System.out.println("Please specify the type of Dictionary you want to create");
+                else
                 create(args);
                 break;
             case "read":
-                read(Integer.parseInt(args[1]), args[2]);
+                read(Integer.#
+                        parseInt(args[1]), args[2]);
             case "p":
                 if (dic == null)
                     System.out.println("Use 'create' to create your first Dictionary!");
@@ -67,14 +71,15 @@ public class TUI {
 
     private static void create(String[] args) {
         System.out.println("Creating new Dictionary");
-        if (args[1].equals("Hash"))
-            dic = new HashDictionary(3);
+        if (args[1].equals("Hash")) {
+            dic = new HashDictionary<>(3);
 
-        else if (args[1].equals("Binary"))
+        } else if (args[1].equals("Binary")) {
             dic = new BinaryTreeDictionary<>();
 
-        else
-            dic = new SortedArrayDictionary();
+        } else {
+            dic = new SortedArrayDictionary<>();
+        }
     }
 
     private static void print() {
@@ -95,8 +100,7 @@ public class TUI {
             in = new FileReader(selectedFile);
             BufferedReader br = new BufferedReader(in);
             start = System.nanoTime();
-            while ((line = br.readLine()) != null && counter < n)
-            {
+            while ((line = br.readLine()) != null && (n == -1 || counter < n)) {
                 String[] words = line.split(" ");
                 dic.insert(words[0], words[1]);
                 counter++;
@@ -111,6 +115,7 @@ public class TUI {
         System.out.println("Time Reading " + (diff / 1000000) + "ms");
 
     }
+
 
     private static void search(String[] args) {
         try {

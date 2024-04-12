@@ -1,8 +1,21 @@
+// O. Bittel
+// 22.09.2022
 package aufgabe1;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * Implementation of the Dictionary interface as AVL tree.
+ * <p>
+ * The entries are ordered using their natural ordering on the keys,
+ * or by a Comparator provided at set creation time, depending on which constructor is used.
+ * <p>
+ * An iterator for this dictionary is implemented by using the parent node reference.
+ *
+ * @param <K> Key.
+ * @param <V> Value.
+ */
 public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements Dictionary<K, V> {
 
     static private class Node<K, V> {
@@ -23,52 +36,99 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
         }
     }
 
-    private static class MinEntry<K, V> {
-        K key;
-        V value;
-    }
-
     private Node<K, V> root = null;
     private int size = 0;
+
     private V oldValue = null;
+
+    private int getHeight(Node<K, V> p) {
+        return (p == null) ? -1 : p.height;
+    }
+
+    private int getBalance(Node<K, V> p) {
+        return (p == null) ? 0 : getHeight(p.right) - getHeight(p.left);
+    }
+
+
+    private Node<K, V> balance(Node<K, V> p) {
+        if (p == null) {
+            return null;
+        }
+        p.height = Math.max(getHeight(p.left), getHeight(p.right)) + 1;
+        if (getBalance(p) == -2) {
+            if (getBalance(p.left) <= 0) {
+                p = rotateRight(p);
+            } else {
+                p = rotateLeftRight(p);
+            }
+        } else if (getBalance(p) == 2) {
+            if (getBalance(p.right) >= 0) {
+                p = rotateLeft(p);
+            } else {
+                p = rotateRightLeft(p);
+            }
+        }
+        return p;
+    }
+
+    private Node<K, V> rotateRight(Node<K, V> p) {
+        assert p.left != null;
+        Node<K, V> q = p.left;
+        p.left = q.right;
+        if (p.left != null) {
+            p.left.parent = p;
+        }
+        q.right = p;
+        q.right.parent = q;
+        p.height = Math.max(getHeight(p.left), getHeight(p.right)) + 1;
+        q.height = Math.max(getHeight(q.left), getHeight(q.right)) + 1;
+        return q;
+    }
+
+    private Node<K, V> rotateLeft(Node<K, V> p) {
+        assert p.right != null;
+        Node<K, V> q = p.right;
+        p.right = q.left;
+        if (p.right != null) {
+            p.right.parent = p;
+        }
+        q.left = p;
+        q.left.parent = q;
+        p.height = Math.max(getHeight(p.left), getHeight(p.right)) + 1;
+        q.height = Math.max(getHeight(q.left), getHeight(q.right)) + 1;
+        return q;
+    }
+
+    private Node<K, V> rotateLeftRight(Node<K, V> p) {
+        assert p.left != null;
+        p.left = rotateLeft(p.left);
+        return rotateRight(p);
+    }
+
+    private Node<K, V> rotateRightLeft(Node<K, V> p) {
+        assert p.right != null;
+        p.right = rotateRight(p.right);
+        return rotateLeft(p);
+    }
+
 
     @Override
     public V insert(K key, V value) {
-        root = insertR(key, value, root); // return value of insertR is the new root
-        if (root != null) { // binary tree is not empty
-            root.parent = null; // root has no parent
+        root = insertR(key, value, root);
+        if (root != null) {
+            root.parent = null;
         }
         return oldValue;
     }
 
-    /*
-    * insertR(root, newKey, newValue)
-
-              root
-              /  \
-             /    \
-       leftSub   rightSub
-
-    (1) insertR(leftSub, newKey, newValue) if newKey < root.key
-    (2) insertR(rightSub, newKey, newValue) if newKey > root.key
-    (3) Update root.value if newKey == root.key
-    * */
     private Node<K, V> insertR(K key, V value, Node<K, V> p) {
         if (p == null) {
-            p = new Node(key, value);
-            oldValue = null;
             size++;
-        } else if (key.compareTo(p.key) < 0) {
+            oldValue = null;
+            p = new Node<>(key, value);
+        }
+        if (key.compareTo(p.key) < 0) {
             p.left = insertR(key, value, p.left);
-
-            /*
-            *        A
-                    / \
-                   B   C      We want to set the parent pointer of
-                  / \         B's left child back to B
-                 D   E
-
-            * */
             if (p.left != null) {
                 p.left.parent = p;
             }
@@ -93,18 +153,22 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
     private V searchR(K key, Node<K, V> p) {
         if (p == null) {
             return null;
+        }
+        if (key.compareTo(p.key) == 0) {
+            return p.value;
         } else if (key.compareTo(p.key) < 0) {
             return searchR(key, p.left);
-        } else if (key.compareTo(p.key) > 0) {
-            return searchR(key, p.right);
         } else {
-            return p.value;
+            return searchR(key, p.right);
         }
     }
 
     @Override
     public V remove(K key) {
         root = removeR(key, root);
+        if (root != null) {
+            root.parent = null;
+        }
         return oldValue;
     }
 
@@ -148,7 +212,7 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
     }
 
     @Override
-    public int size () {
+    public int size() {
         return size;
     }
 
@@ -162,115 +226,41 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
         return p;
     }
 
-    private Node<K,V> parentOfLeftMostAncestor(Node<K, V> p) {
-        assert p != null;
+    private Node<K, V> parentOfRightMostAncestor(Node<K, V> p) {
+        if (p == null) {
+            return null;
+        }
         while (p.parent != null && p.parent.right == p) {
             p = p.parent;
         }
         return p.parent;
     }
 
-    public int getHeight(Node<K, V> p) {
-        if (p == null) {
-            return -1;
-        } else {
-            return p.height;
-        }
-    }
-
-    public int getBalance(Node<K, V> p) {
-        if (p == null) {
-            return 0;
-        } else {  //
-            return getHeight(p.right) - getHeight(p.left);
-        }
-    }
-
-    private Node<K,V> balance(Node<K,V> p) {
-        if (p == null)
-            return null;
-        p.height = Math.max(getHeight(p.left), getHeight(p.right)) + 1;
-        if (getBalance(p) == -2) {
-            if (getBalance(p.left) <= 0)
-                p = rotateRight(p);
-            else
-                p = rotateLeftRight(p);
-        }
-        else if (getBalance(p) == +2) {
-            if (getBalance(p.right) >= 0)
-                p = rotateLeft(p);
-            else
-                p = rotateRightLeft(p);
-        }
-        return p;
-    }
-
-    private Node<K, V> rotateRight(Node<K, V> p) {
-        assert p.left != null;
-        Node<K, V> q = p.left;
-        p.left = q.right;
-        if (p.left != null)
-            p.left.parent = p;
-        q.right = p;
-        if (q.right != null)
-            q.right.parent = q;
-        p.height = Math.max(getHeight(p.left), getHeight(p.right)) + 1;
-        q.height = Math.max(getHeight(q.left), getHeight(q.right)) + 1;
-        return q;
-    }
-    private Node<K, V> rotateLeftRight(Node<K, V> p) {
-        assert p.left != null;
-        p.left = rotateLeft(p.left);
-        return rotateRight(p);
-    }
-    private Node<K, V> rotateLeft(Node<K, V> p) {
-        assert p.right != null;
-        Node<K, V> q = p.right;
-        p.right = q.left;
-        if (p.right != null)
-            p.right.parent = p;
-        q.left = p;
-        if (q.left != null)
-            q.left.parent = q;
-        p.height = Math.max(getHeight(p.right), getHeight(p.left)) + 1;
-        q.height = Math.max(getHeight(q.right), getHeight(q.left)) + 1;
-        return q;
-    }
-    private Node<K, V> rotateRightLeft(Node<K, V> p) {
-        assert p.right != null;
-        p.right = rotateRight(p.right);
-        return rotateLeft(p);
-    }
-
-
-
     @Override
     public Iterator<Entry<K, V>> iterator() {
-        return new Iterator<Entry<K, V>>() {
+        return new Iterator<>() {
 
-            private Node<K, V> current = null;
+            Node<K, V> p = leftMostDescendant(root);
 
             @Override
             public boolean hasNext() {
-                if (current == null) {  // Knoten hat keine Kinder
-                    current = leftMostDescendant(root);
-                } else if (current.right != null) {  // Knoten hat rechtes Kind
-                    current = leftMostDescendant(current.right);
-                } else {
-                    current = parentOfLeftMostAncestor(current);
-                }
-                return current != null;
+                return p.right != null || parentOfRightMostAncestor(p) != null;
             }
 
             @Override
             public Entry<K, V> next() {
-                Entry<K, V> element = new Entry<K, V>(current.key, current.value);
-                return element;
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                p = (p.right != null) ? leftMostDescendant(p.right) : parentOfRightMostAncestor(p);
+                return new Entry<>(p.key, p.value);
             }
         };
     }
 
-
+    /**
+     * Pretty prints the tree
+     */
     public void prettyPrint() {
         printR(0, root);
     }
@@ -278,12 +268,12 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
     private void printR(int level, Node<K, V> p) {
         printLevel(level);
         if (p == null) {
-            System.out.println("#"); // empty Node
+            System.out.println("#");
         } else {
             System.out.println(p.key + " " + p.value + "^" + ((p.parent == null) ? "null" : p.parent.key));
             if (p.left != null || p.right != null) {
                 printR(level + 1, p.left);
-                printR(level + 1, p.right); // increment level if child node exists
+                printR(level + 1, p.right);
             }
         }
     }
