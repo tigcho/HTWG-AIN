@@ -1,9 +1,6 @@
 # Questions
 
-1. First run with the flags `-n 10 -H 0 -p BEST -s 0` to generate a 
-few random allocations and frees. Can you predict what alloc()/free() 
-will return? Can you guess the state of the free list after each 
-request? What do you notice about the free list over time?
+##### 1. First run with the flags `-n 10 -H 0 -p BEST -s 0` to generate a few random allocations and frees. Can you predict what alloc()/free() will return? Can you guess the state of the free list after each request? What do you notice about the free list over time?
 
 - The free list becomes more fragmented over time. The free list is 
   initially empty, but as allocations and deallocations are made, 
