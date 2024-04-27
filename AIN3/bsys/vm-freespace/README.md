@@ -239,3 +239,30 @@ Free List [ Size 4 ]: [ addr:1002 sz:1 ][ addr:1003 sz:5 ][ addr:1015 sz:1 ][ ad
 -    ADDRSORT: Works best with FIRST fit, as it quickly finds the first suitable block. With BEST fit, it requires more scanning to find the smallest block. WORST fit also has longer search times.
 -    SIZESORT+: Ideal for BEST fit, as it minimizes search time for the smallest block. WORST fit and FIRST fit might require more scans.
 -    SIZESORT-: Suitable for WORST fit and FIRST fit, as larger blocks are at the beginning. BEST fit requires more scanning to find smaller blocks.
+
+----------------------------------------
+
+##### 5. Coalescing of a free list can be quite important. Increase the number of random allocations (say to -n 1000). What happens to larger allocation requests over time? Run with and without coalescing (i.e., without and with the -C flag). What differences in outcome do you see? How big is the free list over time in each case? Does the ordering of the list matter in this case?
+
+### Smaller Free Lists
+
+-    Best-Fit allocators select the smallest block that is big enough to fulfill a request. This minimizes leftover free space, smaller free lists and reduced fragmentation.
+-    Worst-Fit allocators choose the largest free block for each allocation, leaving larger blocks of contiguous memory. This also results in smaller free lists because larger free blocks are broken down more slowly compared to best-fit or first-fit.
+
+### Smaller Free Lists Matter!!!!
+
+-    Improved Allocation Times: With smaller free lists, the search time for a suitable block is shorter. This is beneficial for worst-fit and best-fit, where an exhaustive search of the list is required.
+-    Reduced Overhead: Smaller free lists mean fewer operations required to maintain them, resulting in less overhead and faster allocation.
+
+### Impact of List Ordering
+
+-    First-Fit Ordered by Size: When the free list is ordered by size, first-fit allocators may end up with a larger list. This is because they return the first suitable block, which can lead to smaller chunks at the beginning of the list. These smaller chunks can pile up.
+-    Best-Fit/Worst-Fit with Address-Based Ordering: The order in which free blocks are arranged can still impact performance, though to a lesser extent compared to first-fit. If the list is ordered by address, coalescing becomes easier, reducing fragmentation and keeping the free list smaller. This benefits best-fit and worst-fit, where smaller free lists lead to faster allocation.
+
+----------------------------------------
+
+##### 6. What happens when you change the percent allocated fraction -P to higher than 50? What happens to allocations as it nears 100? What about as the percent nears 0?
+
+- When the percent allocated fraction is close to 100, the allocator has fewer free blocks to choose from, leading to more fragmentation and slower allocation times. The allocator may struggle to find suitable blocks, resulting in more searches and increased memory waste.
+- As the percent allocated fraction nears 0, the allocator has more free blocks to choose from, reducing fragmentation and improving allocation times. The allocator can quickly find suitable blocks, resulting in fewer searches and less memory waste.
+
