@@ -64,8 +64,7 @@ Free List [ Size 4 ]: [ addr:1002 sz:1 ][ addr:1003 sz:5 ][ addr:1015 sz:1 ][ ad
 
 ----------------------------------------
 
-2. How are the results different when using a WORST fit policy to
-search the free list (-p WORST)? What changes?
+##### 2. How are the results different when using a WORST fit policy to search the free list (-p WORST)? What changes?
 
 - The free list becomes more fragmented than the BEST fit policy. 
   The WORST fit policy selects the largest free block that can 
@@ -144,7 +143,7 @@ Free List [ Size 5 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ ad
 
 ----------------------------------------
 
-3. What about when using FIRST fit (-p FIRST)? What speeds up when you use first fit?
+##### 3. What about when using FIRST fit (-p FIRST)? What speeds up when you use first fit?
 
 - The FIRST fit policy selects the first free block that can accommodate the requested size. This speeds up the allocation process because the allocator does not need to search the entire free list to find a free block that can accommodate the requested size.
 
@@ -220,10 +219,7 @@ Free List [ Size 4 ]: [ addr:1002 sz:1 ][ addr:1003 sz:5 ][ addr:1015 sz:1 ][ ad
 
 ----------------------------------------
 
-4. For the above questions, how the list is kept ordered can affect the
-time it takes to find a free location for some of the policies. Use
-the different free list orderings (`-l ADDRSORT, -l SIZESORT+,
--l SIZESORT-`) to see how the policies and the list orderings interact.
+##### 4. For the above questions, how the list is kept ordered can affect the time it takes to find a free location for some of the policies. Use the different free list orderings (`-l ADDRSORT, -l SIZESORT+, -l SIZESORT-`) to see how the policies and the list orderings interact.
 
 1.    BEST Fit Policy:
        -  ADDRSORT: BEST fit searches for the smallest block that meets the request. ADDRSORT is neutral since BEST fit may still require scanning most of the list to find the "best" fit.
