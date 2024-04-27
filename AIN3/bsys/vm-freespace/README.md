@@ -1,155 +1,248 @@
+# Questions
 
-# Overview
+1. First run with the flags `-n 10 -H 0 -p BEST -s 0` to generate a 
+few random allocations and frees. Can you predict what alloc()/free() 
+will return? Can you guess the state of the free list after each 
+request? What do you notice about the free list over time?
 
-This program, malloc.py, allows you to see how a simple memory allocator
-works. Here are the options that you have at your disposal:
-
-```sh
-  -h, --help            show this help message and exit
-  -s SEED, --seed=SEED  the random seed
-  -S HEAPSIZE, --size=HEAPSIZE
-                        size of the heap
-  -b BASEADDR, --baseAddr=BASEADDR
-                        base address of heap
-  -H HEADERSIZE, --headerSize=HEADERSIZE
-                        size of the header
-  -a ALIGNMENT, --alignment=ALIGNMENT
-                        align allocated units to size; -1->no align
-  -p POLICY, --policy=POLICY
-                        list search (BEST, WORST, FIRST)
-  -l ORDER, --listOrder=ORDER
-                        list order (ADDRSORT, SIZESORT+, SIZESORT-, INSERT-FRONT, INSERT-BACK)
-  -C, --coalesce        coalesce the free list?
-  -n OPSNUM, --numOps=OPSNUM
-                        number of random ops to generate
-  -r OPSRANGE, --range=OPSRANGE
-                        max alloc size
-  -P OPSPALLOC, --percentAlloc=OPSPALLOC
-                        percent of ops that are allocs
-  -A OPSLIST, --allocList=OPSLIST
-                        instead of random, list of ops (+10,-0,etc)
-  -c, --compute         compute answers for me
-```
-
-One way to use it is to have the program generate some random allocation/free
-operations and for you to see if you can figure out what the free list would
-look like, as well as the success or failure of each operation. 
-
-Here is a simple example:
+- The free list becomes more fragmented over time. The free list is 
+  initially empty, but as allocations and deallocations are made, 
+  the free list becomes more fragmented. This is because the 
+  allocator does not coalesce adjacent free blocks.
 
 ```sh
-prompt> ./malloc.py -S 100 -b 1000 -H 4 -a 4 -l ADDRSORT -p BEST -n 5 
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+# Allocates 3 bytes at address 1000, leaving 97 bytes free at address 1003
 
-ptr[0] = Alloc(3)  returned ?
-List?
 
-Free(ptr[0]) returned ?
-List?
+Free(ptr[0])
+returned 0
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1003 sz:97 ]
+# Frees 3 bytes at address 1000, leaving 97 bytes free at address 1003
 
-ptr[1] = Alloc(5)  returned ?
-List?
 
-Free(ptr[1]) returned ?
-List?
+ptr[1] = Alloc(5) returned 1003 (searched 2 elements)
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1008 sz:92 ]
+# Allocates 5 bytes at address 1003, leaving 92 bytes free at address 1008
 
-ptr[2] = Alloc(8)  returned ?
-List?
+
+Free(ptr[1])
+returned 0
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:92 ]
+# Frees 5 bytes at address 1003, leaving 92 bytes free at address 1008
+
+
+ptr[2] = Alloc(8) returned 1008 (searched 3 elements)
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1016 sz:84 ]
+# Allocates 8 bytes at address 1008, leaving 84 bytes free at address 1016
+
+
+Free(ptr[2])
+returned 0
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+# Frees 8 bytes at address 1008, leaving 84 bytes free at address 1016
+
+
+ptr[3] = Alloc(8) returned 1008 (searched 4 elements)
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1016 sz:84 ]
+# Allocates 8 bytes at address 1008, leaving 84 bytes free at address 1016
+
+
+Free(ptr[3])
+returned 0
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+# Frees 8 bytes at address 1008, leaving 84 bytes free at address 1016
+
+
+ptr[4] = Alloc(2) returned 1000 (searched 4 elements)
+Free List [ Size 4 ]: [ addr:1002 sz:1 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+# Allocates 2 bytes at address 1000, leaving 1 byte free at address 1002
+
+
+ptr[5] = Alloc(7) returned 1008 (searched 4 elements)
+Free List [ Size 4 ]: [ addr:1002 sz:1 ][ addr:1003 sz:5 ][ addr:1015 sz:1 ][ addr:1016 sz:84 ]
+# Allocates 7 bytes at address 1008, leaving 1 byte free at address 1015
 ```
 
-In this example, we specify a heap of size 100 bytes (-S 100), starting at
-address 1000 (-b 1000). We specify an additional 4 bytes of header per
-allocated block (-H 4), and make sure each allocated space rounds up to the
-nearest 4-byte free chunk in size (-a 4). We specify that the free list be
-kept ordered by address (increasing). Finally, we specify a "best fit"
-free-list searching policy (-p BEST), and ask for 5 random operations to be
-generated (-n 5). The results of running this are above; your job is to figure
-out what each allocation/free operation returns, as well as the state of the
-free list after each operation.
+----------------------------------------
 
-Here we look at the results by using the -c option.
+2. How are the results different when using a WORST fit policy to
+search the free list (-p WORST)? What changes?
+
+- The free list becomes more fragmented than the BEST fit policy. 
+  The WORST fit policy selects the largest free block that can 
+  accommodate the requested size. This results in smaller free 
+  blocks being left behind, which can lead to fragmentation even faster.
 
 ```sh
-prompt> ./malloc.py -S 100 -b 1000 -H 4 -a 4 -l ADDRSORT -p BEST -n 5 -c
+❯ python3 malloc.py -n 10 -H 0 -p WORST -s 0 -c
+seed 0
+size 100
+baseAddr 1000
+headerSize 0
+alignment -1
+policy WORST
+listOrder ADDRSORT
+coalesce False
+numOps 10
+range 10
+percentAlloc 50
+allocList 
+compute True
 
-ptr[0] = Alloc(3)  returned 1004 (searched 1 elements)
-Free List [ Size 1 ]:  [ addr:1008 sz:92 ]
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+# Allocates 3 bytes at address 1000, leaving 97 bytes free at address 1003
 
-Free(ptr[0]) returned 0
-Free List [ Size 2 ]:  [ addr:1000 sz:8 ] [ addr:1008 sz:92 ]
 
-ptr[1] = Alloc(5)  returned 1012 (searched 2 elements)
-Free List [ Size 2 ]:  [ addr:1000 sz:8 ] [ addr:1020 sz:80 ]
+Free(ptr[0])
+returned 0
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1003 sz:97 ]
+# Frees 3 bytes at address 1000, leaving 97 bytes free at address 1003
 
-Free(ptr[1]) returned 0
-Free List [ Size 3 ]:  [ addr:1000 sz:8 ] [ addr:1008 sz:12 ] [ addr:1020 sz:80 ]
 
-ptr[2] = Alloc(8)  returned 1012 (searched 3 elements)
-Free List [ Size 2 ]:  [ addr:1000 sz:8 ] [ addr:1020 sz:80 ]
+ptr[1] = Alloc(5) returned 1003 (searched 2 elements)
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1008 sz:92 ]
+# Allocates 5 bytes at address 1003, leaving 92 bytes free at address 1008
 
-As you can see, the first allocation operation (an allocation) returns the
-following information:
 
-ptr[0] = Alloc(3)  returned 1004 (searched 1 elements)
-Free List [ Size 1 ]:  [ addr:1008 sz:92 ]
+Free(ptr[1])
+returned 0
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:92 ]
+# Frees 5 bytes at address 1003, leaving 92 bytes free at address 1008
+
+
+ptr[2] = Alloc(8) returned 1008 (searched 3 elements)
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1016 sz:84 ]
+# Allocates 8 bytes at address 1008, leaving 84 bytes free at address 1016
+
+
+Free(ptr[2])
+returned 0
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+# Frees 8 bytes at address 1008, leaving 84 bytes free at address 1016
+
+
+ptr[3] = Alloc(8) returned 1016 (searched 4 elements)
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1024 sz:76 ]
+# Allocates 8 bytes at address 1016, leaving 76 bytes free at address 1024
+
+
+Free(ptr[3])
+returned 0
+Free List [ Size 5 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:8 ][ addr:1024 sz:76 ]
+# Frees 8 bytes at address 1016, leaving 76 bytes free at address 1024
+
+
+ptr[4] = Alloc(2) returned 1024 (searched 5 elements)
+Free List [ Size 5 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:8 ][ addr:1026 sz:74 ]
+# Allocates 2 bytes at address 1024, leaving 74 bytes free at address 1026
+
+
+ptr[5] = Alloc(7) returned 1026 (searched 5 elements)
+Free List [ Size 5 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:8 ][ addr:1033 sz:67 ]
+# Allocates 7 bytes at address 1026, leaving 67 bytes free at address 1033
 ```
 
-Because the initial state of the free list is just one large element, it is
-easy to guess that the Alloc(3) request will succeed. Further, it will just
-return the first chunk of memory and make the remainder into a free list. The
-pointer returned will be just beyond the header (address:1004), and the
-allocated space is rounded up to 4 bytes, leaving the free list with 92 bytes
-starting at 1008. 
+----------------------------------------
 
-The next operation is a Free, of "ptr[0]" which is what stores the results of
-the previous allocation request. As you can expect, this free will succeed
-(thus returning "0"), and the free list now looks a little more complicated:
+3. What about when using FIRST fit (-p FIRST)? What speeds up when you use first fit?
+
+- The FIRST fit policy selects the first free block that can accommodate the requested size. This speeds up the allocation process because the allocator does not need to search the entire free list to find a free block that can accommodate the requested size.
 
 ```sh
-Free(ptr[0]) returned 0
-Free List [ Size 2 ]:  [ addr:1000 sz:8 ] [ addr:1008 sz:92 ]
+❯ python3 malloc.py -n 10 -H 0 -p FIRST -s 0 -c
+seed 0
+size 100
+baseAddr 1000
+headerSize 0
+alignment -1
+policy FIRST
+listOrder ADDRSORT
+coalesce False
+numOps 10
+range 10
+percentAlloc 50
+allocList 
+compute True
+
+ptr[0] = Alloc(3) returned 1000 (searched 1 elements)
+Free List [ Size 1 ]: [ addr:1003 sz:97 ]
+# Allocates 3 bytes at address 1000, leaving 97 bytes free at address 1003
+
+
+Free(ptr[0])
+returned 0
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1003 sz:97 ]
+# Frees 3 bytes at address 1000, leaving 97 bytes free at address 1003
+
+
+ptr[1] = Alloc(5) returned 1003 (searched 2 elements)
+Free List [ Size 2 ]: [ addr:1000 sz:3 ][ addr:1008 sz:92 ]
+# Allocates 5 bytes at address 1003, leaving 92 bytes free at address 1008
+
+
+Free(ptr[1])
+returned 0
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:92 ]
+# Frees 5 bytes at address 1003, leaving 92 bytes free at address 1008
+
+
+ptr[2] = Alloc(8) returned 1008 (searched 3 elements)
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1016 sz:84 ]
+# Allocates 8 bytes at address 1008, leaving 84 bytes free at address 1016
+
+
+Free(ptr[2])
+returned 0
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+# Frees 8 bytes at address 1008, leaving 84 bytes free at address 1016
+
+
+ptr[3] = Alloc(8) returned 1008 (searched 3 elements)
+Free List [ Size 3 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1016 sz:84 ]
+# Allocates 8 bytes at address 1008, leaving 84 bytes free at address 1016
+
+
+Free(ptr[3])
+returned 0
+Free List [ Size 4 ]: [ addr:1000 sz:3 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+# Frees 8 bytes at address 1008, leaving 84 bytes free at address 1016
+
+
+ptr[4] = Alloc(2) returned 1000 (searched 1 elements)
+Free List [ Size 4 ]: [ addr:1002 sz:1 ][ addr:1003 sz:5 ][ addr:1008 sz:8 ][ addr:1016 sz:84 ]
+# Allocates 2 bytes at address 1000, leaving 1 byte free at address 1002
+
+
+ptr[5] = Alloc(7) returned 1008 (searched 3 elements)
+Free List [ Size 4 ]: [ addr:1002 sz:1 ][ addr:1003 sz:5 ][ addr:1015 sz:1 ][ addr:1016 sz:84 ]
+# Allocates 7 bytes at address 1008, leaving 1 byte free at address 1015
 ```
 
-Indeed, because we are NOT coalescing the free list, we now have two elements
-on it, the first being 8 bytes large and holding the just-returned space, and
-the second being the 92-byte chunk. 
+----------------------------------------
 
-We can indeed turn on coalescing via the -C flag, and the result is:
+4. For the above questions, how the list is kept ordered can affect the
+time it takes to find a free location for some of the policies. Use
+the different free list orderings (`-l ADDRSORT, -l SIZESORT+,
+-l SIZESORT-`) to see how the policies and the list orderings interact.
 
-```sh
-prompt> ./malloc.py -S 100 -b 1000 -H 4 -a 4 -l ADDRSORT -p BEST -n 5 -c -C
-ptr[0] = Alloc(3)  returned 1004 (searched 1 elements)
-Free List [ Size 1 ]:  [ addr:1008 sz:92 ]
+1.    BEST Fit Policy:
+       -  ADDRSORT: BEST fit searches for the smallest block that meets the request. ADDRSORT is neutral since BEST fit may still require scanning most of the list to find the "best" fit.
+       -  SIZESORT+: This is optimal for BEST fit, ensuring the list is already sorted by smallest size, minimizing search time.
+       -  SIZESORT-: This might slow down BEST fit since it starts with the largest blocks, requiring more searches to find the smallest suitable block.
 
-Free(ptr[0]) returned 0
-Free List [ Size 1 ]:  [ addr:1000 sz:100 ]
+2.    WORST Fit Policy:
+       -  ADDRSORT: WORST fit looks for the largest block to allocate from. ADDRSORT may increase search time as it lacks size order.
+       -  SIZESORT+: WORST fit requires a longer search since the smallest blocks are at the start of the list. This leads to higher search costs.
+       -  SIZESORT-: This is optimal for WORST fit, allowing for quick retrieval of the largest block.
 
-ptr[1] = Alloc(5)  returned 1004 (searched 1 elements)
-Free List [ Size 1 ]:  [ addr:1012 sz:88 ]
+3.    FIRST Fit Policy:
+       -  ADDRSORT: FIRST fit scans the list until it finds a suitable block. ADDRSORT works well for this policy, but it might lead to fragmentation at the beginning of the list.
+       -  SIZESORT+: This may require longer scans, as smaller blocks come first, potentially slowing down the allocation.
+       -  SIZESORT-: FIRST fit may quickly find suitable blocks with larger blocks at the start, improving performance.
 
-Free(ptr[1]) returned 0
-Free List [ Size 1 ]:  [ addr:1000 sz:100 ]
-
-ptr[2] = Alloc(8)  returned 1004 (searched 1 elements)
-Free List [ Size 1 ]:  [ addr:1012 sz:88 ]
-```
-
-You can see that when the Free operations take place, the free list is
-coalesced as expected.
-
-There are some other interesting options to explore:
-
-* `-p BEST` or `-p WORST` or `-p FIRST`: This option lets you use these three different strategies to look for a chunk of memory to use during an allocation request 
-* `-l ADDRSORT` or `-l SIZESORT+` or `-l SIZESORT-` or `-l INSERT-FRONT` or `-l INSERT-BACK`: This option lets you keep the free list in a particular order, say sorted by address of the free chunk, size of free chunk (either increasing with a + or decreasing with a -), or simply returning free chunks to the front (INSERT-FRONT) or back (INSERT-BACK) of the free list.
-* `-A list_of_ops`: This option lets you specify an exact series of requests instead of randomly-generated ones. For example, running with the flag "-A +10,+10,+10,-0,-2" will allocate three chunks of size 10 bytes (plus header), and then free the first one ("-0") and then free the third one ("-2"). What will the free list look like then?
-
-Those are the basics. Use the questions from the book chapter to explore more,
-or create new and interesting questions yourself to better understand how
-allocators function.
-
-
-
-
-
-  
-
-  
+-    ADDRSORT: Works best with FIRST fit, as it quickly finds the first suitable block. With BEST fit, it requires more scanning to find the smallest block. WORST fit also has longer search times.
+-    SIZESORT+: Ideal for BEST fit, as it minimizes search time for the smallest block. WORST fit and FIRST fit might require more scans.
+-    SIZESORT-: Suitable for WORST fit and FIRST fit, as larger blocks are at the beginning. BEST fit requires more scanning to find smaller blocks.
