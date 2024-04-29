@@ -34,4 +34,18 @@
 
 ##### What happens as you increase the percentage of pages that are allocated in each address space?
 
+- As the percentage of pages that are allocated in each address space increases, the page table size also increases. This is because the page table needs to store the mapping of each page in the address space to a frame in memory. As more pages are allocated, the page table needs to store more mappings, which increases the size of the page table.
 
+------------------------------------
+
+##### 3. Now let’s try some different random seeds, and some different (and sometimes quite crazy) address-space parameters, for variety:
+
+```sh
+-P 8 -a 32 -p 1024 -v -s 1
+-P 8k -a 32k -p 1m -v -s 2
+-P 1m -a 256m -p 512m -v -s 3
+```
+
+##### Which of these parameter combinations are unrealistic? Why?
+
+- The parameter combination `-P 8 -a 32 -p 1024 -v -s 1` is unrealistic because the page size is larger than the address space. This means that each page in the address space is larger than the entire address space itself, which is not possible.
