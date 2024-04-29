@@ -1,22 +1,181 @@
-\documentclass{article}
-
-\title{THEOINF Blatt 1}
-\author{Selin Kabak}
-\date\today
+\documentclass[a4paper, fleqn]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{enumitem}
 
 \begin{document}
-\maketitle
-\section*{1.1}
-    \begin{enumerate}
-        \item
-        \item
-        \item
-        \end{enumerate}
-\clearpage
-\section*{1.2}
-    \begin{enumerate}
-        \item
-        \item
-        \item
-    \end{enumerate}
+\section*{Hausaufgabe 1}
+Von Fabian Wolter und Selin Kabak
+\setcounter{section}{2}
+\setcounter{subsection}{7}
+\subsection{Kontextfreie Grammatik}
+Gegeben sei: $G_b=(N,\Sigma,P,S)=(\{S,T,X,Y\},\{b\},P,S)$ und
+\[ P=
+\begin{split}
+    S&\rightarrow YT \mid b \mid bb\\
+    Y&\rightarrow XY \mid bb\\
+    Xb&\rightarrow bbX\\
+    XbT&\rightarrow bbT\\
+    XbbT&\rightarrow bbbb\\
+\end{split}
+\]
+\subsubsection{}
+\begin{enumerate}[label=\alph*)]
+    \item $w_1 : S\Rightarrow bb$
+    \item $w_2$ ist nicht möglich, da es keine Regel für $T$ gibt.
+    \item $w_3 : S\Rightarrow YT\Rightarrow XYT\Rightarrow XbbT\Rightarrow bbbb$
+    \item $w_4$ ist auch nicht möglich da man nach $XbbT$ nur die Wahl zwischen\\
+    $bbXbT\Rightarrow \{bbbbT, bbbbXT\}$ oder $bbbb$ hat, was beides nicht weiterführt.
+\end{enumerate}
+\subsubsection{}
+$\mathcal{L}(G_b)=\{b,bb,bbbb\}$
+\subsection{Zahlen-Sprache}
+$\Sigma=\{-,0,1,\dots,9\}$
+\subsubsection{Ganze Zahlen}
+\begin{enumerate}[label=\alph*)]
+    \item $G=(N,\Sigma,P,S)$ mit $N=\{S,Z,Z_0\}$ und
+    \[P=
+    \begin{split}
+        S&\rightarrow -Z\mid 0\mid 1Z_0\mid 2Z_0\mid 3Z_0\mid 4Z_0\mid 5Z_0\mid 6Z_0\mid 7Z_0\mid 8Z_0\mid 9Z_0\\
+        Z&\rightarrow 1Z_0\mid 2Z_0\mid 3Z_0\mid 4Z_0\mid 5Z_0\mid 6Z_0\mid 7Z_0\mid 8Z_0\mid 9Z_0\\
+        Z_0&\rightarrow 0Z\mid 1Z\mid 2Z\mid 3Z\mid 4Z\mid 5Z\mid 6Z\mid 7Z\mid 8Z\mid 9Z\mid \epsilon\\
+    \end{split}
+    \]
+    \item Typ-3
+    \item Ist ja schon
+    \item ``(-?[1..9][0..9]*) $|$ 0''
+\end{enumerate}
+\subsubsection{Otto Zahlen}
+\begin{enumerate}[label=\alph*)]
+    \item $G=(N,\Sigma,P,S)$ mit $N=\{S,Z,Z_0\}$ und
+    \[P=
+    \begin{split}
+        S&\rightarrow ZZ_0 Z \mid Z\\
+        Z&\rightarrow 1\mid 2\mid 3\mid 4\mid 5\mid 6\mid 7\mid 8\mid 9\\
+        Z_0&\rightarrow 0Z_0 0\mid 1Z_0 1\mid 2Z_0 2\mid 3Z_0 3\mid 4Z_0 4\mid 5Z_0 5\mid 6Z_0 6\mid 7Z_0 7\mid 8Z_0 8\mid 9Z_0 9\mid \epsilon\\
+    \end{split}
+    \]
+    \item Typ-1
+    \item Nein
+\end{enumerate}
+\subsubsection{Gerade Zahlen}
+\begin{enumerate}[label=\alph*)]
+    \item $G=(N,\Sigma,P,S)$ mit $N=\{S,Z,Z_0\}$ und
+    \[P=
+    \begin{split}
+        S&\rightarrow -Z\mid 1Z_0\mid 2Z_0\mid 3Z_0\mid 4Z_0\mid 5Z_0\mid 6Z_0\mid 7Z_0\mid 8Z_0\mid 9Z_0\mid 0\mid 2\mid 4\mid 6\mid 8\\
+        Z&\rightarrow 1Z_0\mid 2Z_0\mid 3Z_0\mid 4Z_0\mid 5Z_0\mid 6Z_0\mid 7Z_0\mid 8Z_0\mid 9Z_0\\
+        Z_0&\rightarrow 0Z\mid 1Z\mid 2Z\mid 3Z\mid 4Z\mid 5Z\mid 6Z\mid 7Z\mid 8Z\mid 9Z\mid 0\mid 2\mid 4\mid 6\mid 8\\
+    \end{split}
+    \]
+    \item Typ-3
+    \item ``0 $|$ -?[2468] $|$ (-?[1..9][0..9]*[02468])''
+\end{enumerate}
+\setcounter{section}{3}
+\setcounter{subsection}{0}
+\subsection{Reguläre Ausdrücke, Grammatiken und endliche Automaten}
+\subsubsection{}
+\begin{enumerate}[label=\alph*)]
+    \item $L_1=\{aa,ab,ba,bb\}$
+    \item $L_2=\{aa,ab,ba,bb\}$
+    \item $L_3=\{\epsilon,ab,abab,ababab,\dots\}$
+    \item $L_4=\{\epsilon,aa,b,aaaa,aab,baa,bb,aaaaaa,aaaab,aabaa,aabb,baaaa,\dots\}$
+    \item $L_5=\{Der, Die, Das, der, die, das\}$
+    \item $L_6=\{0, +0, -0, 1, +1, -1,\dots,133,+133,-133,\dots, 0004244,+0004244,-0004244,\dots\}$
+    \item $L_7=\{0,1,2,3,\dots,9,A,B,\dots,F,00,01,\dots,FE,FF,000,001,\dots\}$
+\end{enumerate}
+\subsubsection{}
+\begin{enumerate}[label=\alph*)]
+    \item $L_8=\mathcal{L}(r_8)$ mit $r_8=M(e|a)(i|y)e?r$
+    \item $L_9=\mathcal{L}(r_9)$ mit $r_9=10^*$€
+    \item $L_{10}=\mathcal{L}(r_{10})$ mit $r_{10}=a^*b^*$
+    \item $L_{11}=\mathcal{L}(r_{11})$ mit $r_{11}=a+b+$
+    \item $L_{12}=\mathcal{L}(r_{12})$ mit $r_{12}=(ab)+$
+    \item $L_{13}=\mathcal{L}(r_{13})$ mit $r_{13}=(a|b)^*$
+    \item $L_{14}=\mathcal{L}(r_{14})$ mit $r_{14}=(a^*b^*)^*$
+    \item $L_{14}=\mathcal{L}(r_{14})$ mit $r_{14}=(a+b+)+$
+\end{enumerate}
+\subsubsection{}
+\begin{enumerate}[label=\alph*)]
+    \item $G_1=(N,\Sigma,P,S)$ mit $N=\{S, A, B\}$, $\Sigma=\{a,b\}$ und
+    \[P=
+    \begin{split}
+        S&\rightarrow aA\mid aB\mid bA\mid bB\\
+        A&\rightarrow a\\
+        B&\rightarrow b
+    \end{split}
+    \]
+    \item $G_3=(N,\Sigma,P,S)$ mit $N=\{S, A, B\}$, $\Sigma=\{a,b\}$ und
+    \[P=
+    \begin{split}
+        S&\rightarrow \epsilon\mid aB\\
+        A&\rightarrow aB\\
+        B&\rightarrow bA\mid b
+    \end{split}
+    \]
+    \item $G_4=(N,\Sigma,P,S)$ mit $N=\{S, A_1, A_2, B\}$, $\Sigma=\{a,b\}$ und
+    \[P=
+    \begin{split}
+        S&\rightarrow \epsilon\mid aA_2\mid bA_1\mid bB\mid b\\
+        A_1&\rightarrow aA_2\\
+        A_2&\rightarrow aB\mid aA_1\mid a\\
+        B&\rightarrow bB\mid bA_1\mid b
+    \end{split}
+    \]
+    \item $G_{12}=(N,\Sigma,P,S)$ mit $N=\{S, B\}$, $\Sigma=\{a,b\}$ und
+    \[P=
+    \begin{split}
+        S&\rightarrow aB\\
+        B&\rightarrow bS\mid b
+    \end{split}
+    \]
+\end{enumerate}
+\subsubsection{}
+\begin{enumerate}[label=\alph*)]
+    \item $G_{11}=(N,\Sigma,P,S)$ mit $N=\{S, B\}$, $\Sigma=\{a,b\}$ und
+    \[P=
+    \begin{split}
+        S&\rightarrow aS\mid aB\\
+        B&\rightarrow bB\mid b
+    \end{split}
+    \]
+    \item $G_{10}=(N,\Sigma,P,S)$ mit $N=\{S, B\}$, $\Sigma=\{a,b\}$ und
+    \[P=
+    \begin{split}
+        S&\rightarrow aS\mid aB\mid a\mid b\\
+        B&\rightarrow bB\mid b
+    \end{split}
+    \]
+    \item $G_7=(N,\Sigma,P,S)$ mit $N=\{S, Z\}$, $\Sigma=\{0,1,\dots,9,A,\dots,F\}$ und
+    \[P=
+    \begin{split}
+        S&\rightarrow 0Z\mid 1Z\mid 2Z\mid 3Z\mid 4Z\mid 5Z\mid 6Z\mid 7Z\mid 8Z\mid 9Z\mid AZ\mid BZ\mid CZ\mid DZ\mid EZ\mid FZ\\
+        Z&\rightarrow 0Z\mid 1Z\mid 2Z\mid 3Z\mid 4Z\mid 5Z\mid 6Z\mid 7Z\mid 8Z\mid 9Z\mid AZ\mid BZ\mid CZ\mid DZ\mid EZ\mid FZ\mid \epsilon
+    \end{split}
+    \]
+    \item $G_6=(N,\Sigma,P,S)$ mit $N=\{S, Z_1, Z\}$, $\Sigma=\{+,-,0,1,2,3,4,5,6,7,8,9\}$ und
+    \[P=
+    \begin{split}
+        S&\rightarrow+Z_1\mid -Z_1\mid 0Z\mid 1Z\mid 2Z\mid 3Z\mid 4Z\mid 5Z\mid 6Z\mid 7Z\mid 8Z\mid 9Z\\
+        Z_1&\rightarrow 0Z\mid 1Z\mid 2Z\mid 3Z\mid 4Z\mid 5Z\mid 6Z\mid 7Z\mid 8Z\mid 9Z\\
+        Z&\rightarrow 0Z\mid 1Z\mid 2Z\mid 3Z\mid 4Z\mid 5Z\mid 6Z\mid 7Z\mid 8Z\mid 9Z\mid \epsilon\\
+    \end{split}
+    \]
+\end{enumerate}
+\setcounter{subsection}{3}
+\subsection{Star Wars; Autoren: Marco Mollo und Konstantin Zabaznov}
+\subsubsection{Level: Easy}
+\begin{enumerate}[label=\alph*)]
+    \item ``\textbackslash.\textbackslash.\textbackslash.'' ergibt: der dreipunkt kommt 152 Mal vor.
+    \item ``(S$|$s)(T$|$t)(A$|$a)(R$|$r)(S$|$s)?\textbackslash s'' ergibt: das Wort Star kommt 224 Mal vor.
+    \item ``(Luke)$|$(Leia)$|$(Vader)'' ergibt: Luke, Leia und Vader kommen zusammen 596 Mal vor.
+    \item ``\textbackslash S(E$|$e)(N$|$n)(D$|$d)\textbackslash s'' ergibt: die Endung `end' kommt 14 Mal vor.
+\end{enumerate}
+\subsubsection{Level: Challenging}
+\begin{enumerate}[label=\alph*)]
+    \item ``\textbackslash n'' und ``\textasciicircum\textbackslash n'' ergeben 7519 Zeilen, davon 2764 leer.
+    \item ``\textbackslash s\{20\}'' ergibt: Sprechdialoge kommen 1017 Mal vor.
+    \item ``(XP-[0-9]*)$|$(R2(-D2)?)$|$(C-3PO)'' ergibt: die Raumschiffe XP-beliebige Zahl\\
+    und die Druiden kommen insgesamt 16 Mal vor.
+\end{enumerate}
 \end{document}
