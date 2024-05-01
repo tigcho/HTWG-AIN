@@ -20,3 +20,28 @@
 
 from: GeeksForGeeks[![GeeksForGeeks](https://media.geeksforgeeks.org/wp-content/uploads/20190608174704/multilevel.png)](https://www.geeksforgeeks.org/multilevel-paging-in-operating-system/)
 
+-------------------
+
+##### 2. Use the simulator to perform translations given random seeds 0, 1, and 2, and check your answers using the -c flag. How many memory references are needed to perform each lookup?
+
+`❯ python3 paging-multilevel-translate.py -s 0`
+For Virtual Address `0x611c`:
+- 0x611c in binary is 11000 01000 11100
+- First 5 bits are 11000 = 24 (0x18, PDE index)
+- Next 5 bits are 01000 = 8 (0x8, PTE index)
+- Last 5 bits are 11100 = 28 (0x1c, offset)
+- Now look at byte 24 (index) in page 108 
+- The content is 83 fe e0 da 7f d4 7f eb be 9e d5 ad e4 ac 90 d6 92 d8 c1 f8 9f e1 ed e9 a1 e8 c7 c2 a9 d1 db ff
+- The PDE content is 0xa1 (in binary 10100001, so it is a valid entry)
+- The rest of the address 0100001 (33) is the PFN, now we look at byte 8 (index) in page 33
+- The content is 7f 7f 7f 7f 7f 7f 7f 7f b5 7f 9d 7f 7f 7f 7f 7f 7f 7f 7f 7f 7f 7f 7f 7f 7f 7f f6 b1 7f 7f 7f 7f
+- The PTE content is 0xb5 (in binary 10110101, so it is a valid entry)
+- The rest of the address is 0110101 (53) is the PFN
+- The physical address is constructed from the PFN and the offset: 53 * 32 + 28 = 1724 (0x6bc)
+- The content of the physical address is 8 because offset 28 at page 53 gives me 0x08
+
+- You need 3 memory references to perform the lookup: 1 for the PDE, 1 for the PTE, and 1 for the data.
+
+
+
+
