@@ -18,5 +18,5 @@
 
 - For each level more I would have assumed we need one register more to index between them, but I am not sure about this. Maybe having one register in general is enough because the PTBR holds the base address of a page directory, and if there are more levels then that value might just be different for each level, without needing a separate register for each level.
 
-from: [![GeeksForGeeks](https://media.geeksforgeeks.org/wp-content/uploads/20190608174704/multilevel.png)](https://www.geeksforgeeks.org/multilevel-paging-in-operating-system/)
+from: GeeksForGeeks[![GeeksForGeeks](https://media.geeksforgeeks.org/wp-content/uploads/20190608174704/multilevel.png)](https://www.geeksforgeeks.org/multilevel-paging-in-operating-system/)
 
