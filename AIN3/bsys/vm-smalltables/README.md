@@ -1,84 +1,22 @@
+# Making it make sense :3
 
-# Overview
+1. The virtual address space for the process is 1024 pages, and each page has the size of 32 bytes. To address 1024 pages, we need 10 bits because 2^10 = 1024. To address a single page, we need 5 bits because 2^5 = 32. Therefore, the virtual address is 15 bits long (10 bits for the Virtual Page Numer + 5 Bits for the offset).
 
-This fun little homework tests if you understand how a multi-level page table
-works. And yes, there is some debate over the use of the term fun in the
-previous sentence. The program is called: `paging-multilevel-translate.py`
+2. The physical memory has 128 frames, and each frame has the size of 32 bytes. To address 128 frames, we need 7 bits because 2^7 = 128. To address a single frame, we need 5 bits because 2^5 = 32. Therefore, the physical address is 12 bits long (7 bits for the Frame Number + 5 Bits for the offset).
 
-Some basic assumptions:
+3. The system uses a multi-level page table to map the virtual address to the physical address. The first five bits of the virtual address are used to index the page directory. If the Page Directory Entry (PDE) is valid, it points to a page of the page table. The next five bits are used to index the page table. Each page table holds 32 page table entries (PTEs). If the PTE is valid it points to the physical frame number (PFN) of the virtual page.
 
-* The page size is an unrealistically-small 32 bytes
-* The virtual address space for the process in question (assume there is only one) is 1024 pages, or 32 KB
-* physical memory consists of 128 pages
+4. The size of the PTE and PDE are 8 bits (1 Byte) each which allows for 256 entries in the page table and page directory because 2^8 = 256. The valid bit is 1 bit, and if it is set, it means that the entry is in use. The PFN/PDE is 7 bits long and locate where the page is located in physical memory/which page should be used for the next level of lookup. The Page Directory Base Register (PDBR) points to the starting page in the page directory in physical memory.
 
-Thus, a virtual address needs 15 bits (5 for the offset, 10 for the VPN).
-A physical address requires 12 bits (5 offset, 7 for the PFN).
+-------------------
 
-The system assumes a multi-level page table. Thus, the upper five bits of a virtual
-address are used to index into a page directory; the page directory entry (PDE), if valid,
-points to a page of the page table. Each page table page holds 32 page-table entries
-(PTEs). Each PTE, if valid, holds the desired translation (physical frame number, or PFN)
-of the virtual page in question.
+# Questions
 
-The format of a PTE is thus:
+##### 1. With a linear page table, you need a single register to locate the page table, assuming that hardware does the lookup upon a TLB miss. How many registers do you need to locate a two-level page table? A three-level table?
 
-```sh
-  VALID | PFN6 ... PFN0
-```
+- For a linear page table, we only need one register to locate the page table because the page table is stored in contiguous memory. Given a virtual address, the hardware extracts the VPN and uses it to index into the page table to find the corresponding PFN. Since the page table is a simple array, you only need a single base register to locate the beginning. If there is a TLB miss, the hardware will use the base register to find the page table and perform the lookup. At a TLB hit, the hardware will use the TLB to find the PFN directly, without needing the base register.
 
-and is thus 8 bits or 1 byte.
+- For each level more I would have assumed we need one register more to index between them, but I am not sure about this. Maybe having one register in general is enough because the PTBR holds the base address of a page directory, and if there are more levels then that value might just be different for each level, without needing a separate register for each level.
 
-The format of a PDE is essentially identical:
-
-```sh
-  VALID | PT6 ... PT0
-```
-
-You are given two pieces of information to begin with.
-
-First, you are given the value of the page directory base register (PDBR),
-which tells you which page the page directory is located upon.
-
-Second, you are given a complete dump of each page of memory. A page dump
-looks like this: 
-
-```sh
-    page 0: 08 00 01 15 11 1d 1d 1c 01 17 15 14 16 1b 13 0b ...
-    page 1: 19 05 1e 13 02 16 1e 0c 15 09 06 16 00 19 10 03 ...
-    page 2: 1d 07 11 1b 12 05 07 1e 09 1a 18 17 16 18 1a 01 ...
-    ...
-```
-
-which shows the 32 bytes found on pages 0, 1, 2, and so forth. The first byte
-(0th byte) on page 0 has the value 0x08, the second is 0x00, the third 0x01,
-and so forth.
-
-You are then given a list of virtual addresses to translate. 
-
-Use the PDBR to find the relevant page table entries for this virtual page. 
-Then find if it is valid. If so, use the translation to form a final physical
-address. Using this address, you can find the VALUE that the memory reference
-is looking for. 
-
-Of course, the virtual address may not be valid and thus generate a fault.
-
-Some useful options:
-
-```sh
-  -s SEED, --seed=SEED       the random seed
-  -n NUM, --addresses=NUM    number of virtual addresses to generate
-  -c, --solve                compute answers for me
-```
-
-Change the seed to get different problems, as always.
-
-Change the number of virtual addresses generated to do more translations
-for a given memory dump.
-
-Use -c (or --solve) to show the solutions.
-
-Good luck with this monstrosity!
-
-
-
+from: [![GeeksForGeeks](https://media.geeksforgeeks.org/wp-content/uploads/20190608174704/multilevel.png)](https://www.geeksforgeeks.org/multilevel-paging-in-operating-system/)
 
