@@ -42,6 +42,12 @@ For Virtual Address `0x611c`:
 
 - You need 3 memory references to perform the lookup: 1 for the PDE, 1 for the PTE, and 1 for the data.
 
+-------------------
 
+##### 3. Given your understanding of how cache memory works, how do you think memory references to the page table will behave in the cache? Will they lead to lots of cache hits (and thus fast accesses?) Or lots of misses (and thus slow accesses)?
 
+- If PTEs and PDEs are accessed in nearby memory addresses (spatial locality), then the cache will be able to take advantage of this and load the nearby entries into the cache. This will lead to cache hits and faster accesses because the cache will contain the relevant entries. However, if the PTEs and PDEs are scattered across memory (no spatial locality), then the cache will not be able to predict the next entry to load, leading to cache misses and slower accesses.
 
+- The cache will be able to take advantage of temporal locality if the same PTEs and PDEs are accessed multiple times, as they will be kept in the cache for faster access. However, if the cache is too small to hold all the relevant entries, it may lead to cache evictions and cache misses.
+
+- If the address space and page table are large and have multiple levels, then memory references to the page table may lead to lots of cache misses due to the size and complexity of the page table. The cache may not be able to hold all the relevant entries, leading to slower accesses as the system has to fetch the data from main memory. 
