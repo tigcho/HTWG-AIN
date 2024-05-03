@@ -1,22 +1,19 @@
+# Making it make sense :3
 
-# Overview
+1. Page Replacement Policies
+- FIFO (First In First Out): The oldest page is replaced first.
+- LRU (Least Recently Used): The least recently used page is replaced first.
+- MRU (Most Recently Used): The most recently used page is replaced first.
+- OPT (Optimal): The page that will not be used for the longest period of time is replaced first.
+- UNOPT (Unoptimal): The page that will be used for the longest period of time is replaced first.
+- CLOCK: does the clock algorithm and takes another argument which states how many bits should be kept per page. The more clock bits there are, the better the algorithm should be at determining which pages to keep in memory.
 
-This simulator, paging-policy.py, allows you to play around with different
-page-replacement policies. For example, let's examine how LRU performs with a
-series of page references with a cache of size 3:
+2. Analyzing the output
+When running the simulator with the following command:
+`./paging-policy.py --addresses=0,1,2,0,1,3,0,3,1,2,1 --policy=LRU --cachesize=3 -c`
 
+We get the following output:
 ```sh
-  0 1 2 0 1 3 0 3 1 2 1
-```
-
-To do so, run the simulator as follows:
-
-```sh
-prompt> ./paging-policy.py --addresses=0,1,2,0,1,3,0,3,1,2,1 
-                           --policy=LRU --cachesize=3 -c
-
-And what you would see is:
-
 ARG addresses 0,1,2,0,1,3,0,3,1,2,1
 ARG numaddrs 10
 ARG policy LRU
@@ -38,99 +35,59 @@ Access: 1 HIT  LRU->[br 0, 3, 1]<-MRU Replace:2 [br Hits:5 Misses:4]
 Access: 2 MISS LRU->[br 3, 1, 2]<-MRU Replace:0 [br Hits:5 Misses:5]
 Access: 1 HIT  LRU->[br 3, 2, 1]<-MRU Replace:0 [br Hits:6 Misses:5]
 ```
-  
-The complete set of possible arguments for paging-policy is listed on the
-following page, and includes a number of options for varying the policy, how
-addresses are specified/generated, and other important parameters such as the
-size of the cache. 
+
+It indicates the result of each page access, whether it was a hit or a miss, the current state of the cache, and which page was replaced. The notation `[br ...]` shows the cache content from the LRU to MRU. The `Replace` field shows which page was replaced.
+
+3. Question about different cache sizes
+```sh
+❯ python3 paging-policy.py -C 3 -a 1,2,3,4,1,2,5,1,2,3,4,5 -c
+Access: 1  MISS FirstIn ->          [1] <- Lastin  Replaced:- [Hits:0 Misses:1]
+Access: 2  MISS FirstIn ->       [1, 2] <- Lastin  Replaced:- [Hits:0 Misses:2]
+Access: 3  MISS FirstIn ->    [1, 2, 3] <- Lastin  Replaced:- [Hits:0 Misses:3]
+Access: 4  MISS FirstIn ->    [2, 3, 4] <- Lastin  Replaced:1 [Hits:0 Misses:4]
+Access: 1  MISS FirstIn ->    [3, 4, 1] <- Lastin  Replaced:2 [Hits:0 Misses:5]
+Access: 2  MISS FirstIn ->    [4, 1, 2] <- Lastin  Replaced:3 [Hits:0 Misses:6]
+Access: 5  MISS FirstIn ->    [1, 2, 5] <- Lastin  Replaced:4 [Hits:0 Misses:7]
+Access: 1  HIT  FirstIn ->    [1, 2, 5] <- Lastin  Replaced:- [Hits:1 Misses:7]
+Access: 2  HIT  FirstIn ->    [1, 2, 5] <- Lastin  Replaced:- [Hits:2 Misses:7]
+Access: 3  MISS FirstIn ->    [2, 5, 3] <- Lastin  Replaced:1 [Hits:2 Misses:8]
+Access: 4  MISS FirstIn ->    [5, 3, 4] <- Lastin  Replaced:2 [Hits:2 Misses:9]
+Access: 5  HIT  FirstIn ->    [5, 3, 4] <- Lastin  Replaced:- [Hits:3 Misses:9]
+
+FINALSTATS hits 3   misses 9   hitrate 25.00
+```
+- In this example we have a cache size of 3, which means that the cache can hold up to 3 pages at a time. The cache is initially empty, so the first 3 pages are added to the cache without any replacements. With a FIFO policy, the oldest page is replaced when a new page is accessed. The first four accesses are misses since the cache starts empty. After four accesses, the cache is full, and the first page is replaced. The fifth access is therefore a miss, because the first page is no longer in the cache. Same with the 6th and 7th access. The 8th, 9th and 10th are hits because the cache holds the pages 1, 2 and 5 at that point.
 
 ```sh
-prompt> ./paging-policy.py --help
-Usage: paging-policy.py [options]
+❯ python3 paging-policy.py -C 4 -a 1,2,3,4,1,2,5,1,2,3,4,5 -c
+Access: 1  MISS FirstIn ->          [1] <- Lastin  Replaced:- [Hits:0 Misses:1]
+Access: 2  MISS FirstIn ->       [1, 2] <- Lastin  Replaced:- [Hits:0 Misses:2]
+Access: 3  MISS FirstIn ->    [1, 2, 3] <- Lastin  Replaced:- [Hits:0 Misses:3]
+Access: 4  MISS FirstIn -> [1, 2, 3, 4] <- Lastin  Replaced:- [Hits:0 Misses:4]
+Access: 1  HIT  FirstIn -> [1, 2, 3, 4] <- Lastin  Replaced:- [Hits:1 Misses:4]
+Access: 2  HIT  FirstIn -> [1, 2, 3, 4] <- Lastin  Replaced:- [Hits:2 Misses:4]
+Access: 5  MISS FirstIn -> [2, 3, 4, 5] <- Lastin  Replaced:1 [Hits:2 Misses:5]
+Access: 1  MISS FirstIn -> [3, 4, 5, 1] <- Lastin  Replaced:2 [Hits:2 Misses:6]
+Access: 2  MISS FirstIn -> [4, 5, 1, 2] <- Lastin  Replaced:3 [Hits:2 Misses:7]
+Access: 3  MISS FirstIn -> [5, 1, 2, 3] <- Lastin  Replaced:4 [Hits:2 Misses:8]
+Access: 4  MISS FirstIn -> [1, 2, 3, 4] <- Lastin  Replaced:5 [Hits:2 Misses:9]
+Access: 5  MISS FirstIn -> [2, 3, 4, 5] <- Lastin  Replaced:1 [Hits:2 Misses:10]
 
-Options:
--h, --help      show this help message and exit
--a ADDRESSES, --addresses=ADDRESSES
-                a set of comma-separated pages to access; 
-                -1 means randomly generate
--f ADDRESSFILE, --addressfile=ADDRESSFILE
-                a file with a bunch of addresses in it
--n NUMADDRS, --numaddrs=NUMADDRS
-                if -a (--addresses) is -1, this is the 
-                number of addrs to generate
--p POLICY, --policy=POLICY
-                replacement policy: FIFO, LRU, LFU, OPT, 
-                                    UNOPT, RAND, CLOCK
--b CLOCKBITS, --clockbits=CLOCKBITS
-                for CLOCK policy, how many clock bits to use
--C CACHESIZE, --cachesize=CACHESIZE
-                size of the page cache, in pages
--m MAXPAGE, --maxpage=MAXPAGE
-                if randomly generating page accesses, 
-                this is the max page number
--s SEED, --seed=SEED  random number seed
--N, --notrace   do not print out a detailed trace
--c, --compute   compute answers for me
+FINALSTATS hits 2   misses 10   hitrate 16.67
 ```
-  
-As usual, "-c" is used to solve a particular problem, whereas without it, the
-accesses are just listed (and the program does not tell you whether or not a
-particular access is a hit or miss).
+- In this example we have a cache size of 4, which means that the cache can hold up to 4 pages at a time. It works the same way as above.
 
-To generate a random problem, instead of using "-a/--addresses" to pass in
-some page references, you can instead pass in "-n/--numaddrs" as the number of
-addresses the program should randomly generate, with "-s/--seed" used to
-specify a different random seed. For example:
+**Question:** What is the difference between the two examples above? Why does the hit rate differ so much between the two examples?
 
-```sh
-prompt> ./paging-policy.py -s 10 -n 3
-.. .
-Assuming a replacement policy of FIFO, and a cache of size 3 pages,
-figure out whether each of the following page references hit or miss
-in the page cache.
-  
-Access: 5  Hit/Miss?  State of Memory?
-Access: 4  Hit/Miss?  State of Memory?
-Access: 5  Hit/Miss?  State of Memory?
-```
-  
-As you can see, in this example, we specify "-n 3" which means the program
-should generate 3 random page references, which it does: 5, 7, and 5. The
-random seed is also specified (10), which is what gets us those particular
-numbers. After working this out yourself, have the program solve the problem
-for you by passing in the same arguments but with "-c" (showing just the
-relevant part here):
+- The difference between the two examples is the cache size. The first example has a cache size of 3, while the second example has a cache size of 4. The hit rate differs because the cache size affects how many pages can be stored in the cache at a time. A larger cache size doesn't necessarily mean a higher hit rate. 
 
-```sh
-prompt> ./paging-policy.py -s 10 -n 3 -c
-...
-Solving...
+------------------------
 
-Access: 5 MISS FirstIn->   [br 5] <-Lastin Replace:- [br Hits:0 Misses:1]
-Access: 4 MISS FirstIn->[br 5, 4] <-Lastin Replace:- [br Hits:0 Misses:2]
-Access: 5 HIT  FirstIn->[br 5, 4] <-Lastin Replace:- [br Hits:1 Misses:2]
-```
+# Questions
 
-The default policy is FIFO, though others are available, including LRU, MRU,
-OPT (the optimal replacement policy, which peeks into the future to see what
-is best to replace), UNOPT (which is the pessimal replacement), RAND (which
-does random replacement), and CLOCK (which does the clock algorithm). The
-CLOCK algorithm also takes another argument (-b), which states how many bits
-should be kept per page; the more clock bits there are, the better the
-algorithm should be at determining which pages to keep in memory.
+##### 1. Generate random addresses with the following arguments: `-s 0 -n 10, -s 1 -n 10, and -s 2 -n 10`. Change the policy from FIFO, to LRU, to OPT. Compute whether each access in said address traces are hits or misses.
 
-Other options include: "-C/--cachesize" which changes the size of the page
-cache; "-m/--maxpage" which is the largest page number that will be used if
-the simulator is generating references for you; and "-f/--addressfile" which
-lets you specify a file with addresses in them, in case you wish to get traces
-from a real application or otherwise use a long trace as input.
 
-One last piece of fun: why are these two examples interesting?
 
-```sh
-./paging-policy.py -C 3 -a 1,2,3,4,1,2,5,1,2,3,4,5
-```
-and
-```sh
-./paging-policy.py -C 4 -a 1,2,3,4,1,2,5,1,2,3,4,5
-```
+
+
