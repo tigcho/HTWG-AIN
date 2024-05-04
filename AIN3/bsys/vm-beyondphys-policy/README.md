@@ -87,6 +87,26 @@ FINALSTATS hits 2   misses 10   hitrate 16.67
 
 ##### 1. Generate random addresses with the following arguments: `-s 0 -n 10, -s 1 -n 10, and -s 2 -n 10`. Change the policy from FIFO, to LRU, to OPT. Compute whether each access in said address traces are hits or misses.
 
+### `-s 0 -n 10`:
+**FIFO**
+- Hit Rate: 10% because the first three are misses and the subsequent misses happen since FIFO evicts the oldest pages, often leading to reloading recently accessed pages, without considering the future.
+
+**LRU**
+- Hit Rate: 20% because the first three are misses (empty cache) and the next two are misses because the cache was full, leading to eviction of the least recently used pages (8 and 7). The rest of the isses are happening because the ache keeps evicting the most recently used pages, again, without considering the future.
+
+**OPT**
+- Hit Rate: 40% because the first three are misses (empty cache) and the next accesses are hits because it uses foresight to decide with pages to evict. 
+
+### `-s 2 -n 10`:
+What's interesting about this random seed is that all three policies achieved the same hit rate.
+
+------------------------
+
+##### 2. For a cache of size 5, generate worst-case address reference streams for each of the following policies: FIFO, LRU, and MRU (worst-case reference streams cause the most misses possible. For the worst case reference streams, how much bigger of a cache is needed to improve performance dramatically and approach OPT?
+
+- `-C 5 -a 1,2,3,4,5,6,1,2,3,4,5,6`
+This could work for FIFO and LRU, but OPT would probably predict this, so you would need to change it up after the 6th page comes in. 
+To improve performance, increasing the cache size to 6 would help since it could hold the whole sequence withouy evicting a page.
 
 
 
