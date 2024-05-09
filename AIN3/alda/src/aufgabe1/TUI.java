@@ -31,8 +31,7 @@ public class TUI {
                 create(args);
                 break;
             case "read":
-                read(Integer.#
-                        parseInt(args[1]), args[2]);
+                read(Integer.parseInt(args[1]), args[2]);
             case "p":
                 if (dic == null)
                     System.out.println("Use 'create' to create your first Dictionary!");

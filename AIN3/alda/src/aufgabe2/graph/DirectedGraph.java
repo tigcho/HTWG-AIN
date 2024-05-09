@@ -1,7 +1,4 @@
-// O. Bittel;
-// 22.02.2017
-
-package directedGraph;
+package aufgabe2.graph;
 
 import java.util.Set;
 
@@ -10,8 +7,6 @@ import java.util.Set;
  * Mit g.addEdge(v,w, weight) wird eine gerichtete Kante von v nach w mit dem Gewicht weight einfügt.
  * Falls kein Gewicht angegeben wird, dann ist das Gewichte implizit auf 1 gesetzt.
  * Der Graph einthält keine Mehrfachkanten.
- * @author Oliver Bittel
- * @since 22.03.2018
  * @param <V> Knotentyp.
  */
 public interface DirectedGraph<V> {
@@ -86,7 +81,6 @@ public interface DirectedGraph<V> {
     /**
      * Liefert eine nicht modifizierbare Sicht (unmodifiable view) 
 	 * auf die Menge aller Knoten im Graph zurück.
-	 * 
      * @return Knotenmenge
      */
     Set<V> getVertexSet();
