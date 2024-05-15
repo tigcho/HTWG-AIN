@@ -9,11 +9,11 @@ import java.util.*;
 public class AnalyzeWebSite {
     public static void main(String[] args) throws IOException {
         // Graph aus Website erstellen und ausgeben:
-        DirectedGraph<String> webSiteGraph = buildGraphFromWebSite("/home/selin/HTWG-AIN/AIN3/alda/src/aufgabe2/data/WebSiteKlein");
-        //DirectedGraph<String> webSiteGraph = buildGraphFromWebSite("/home/selin/HTWG-AIN/AIN3/alda/src/aufgabe2/data/WebSiteGross");
+         DirectedGraph<String> webSiteGraph = buildGraphFromWebSite("/home/selin/HTWG-AIN/AIN3/alda/src/aufgabe2/data/WebSiteKlein");
+        // DirectedGraph<String> webSiteGraph = buildGraphFromWebSite("/home/selin/HTWG-AIN/AIN3/alda/src/aufgabe2/data/WebSiteGross");
         System.out.println("Anzahl Seiten: \t" + webSiteGraph.getNumberOfVertexes());
         System.out.println("Anzahl Links: \t" + webSiteGraph.getNumberOfEdges());
-        //System.out.println(webSiteGraph);
+        // System.out.println(webSiteGraph);
 
         // Starke Zusammenhangskomponenten berechnen und ausgeben
         StrongComponents<String> sc = new StrongComponents<>(webSiteGraph);
@@ -33,6 +33,7 @@ public class AnalyzeWebSite {
             LineNumberReader in = new LineNumberReader(new FileReader(f));
             String line;
             while ((line = in.readLine()) != null) {
+                // search for hyperlinks and add them to the graph as edges
                 if (line.contains("href")) {
                     String[] s_arr = line.split("\"");
                     String to = s_arr[1];
@@ -44,18 +45,21 @@ public class AnalyzeWebSite {
     }
 
     private static <V> void pageRank(DirectedGraph<V> g) {
-        int nI = 10;
+        int nI = 10; // number of iterations
         double alpha = 0.5;
 
         // Definiere und initialisiere rankTable:
+        // HashMap has time complexity O(1) for get and put operations, faster than TreeMap
+        // does not need to be sorted for the Iteration, saves space and time
         Map<V, Double> rankTable = new HashMap<>();
         for (V v : g.getVertexSet()) {
+            // initial rank for each page is 1/n, they are all equally important
             rankTable.put(v, 1.0 / g.getNumberOfVertexes());
         }
 
         // Iteration:
         for (int i = 0; i < nI; i++) {
-            Map<V, Double> newRankTable = new HashMap<>();
+            Map<V, Double> newRankTable = new HashMap<>(); // new HashMap to store new ranks
             for (V v : g.getVertexSet()) {
                 double rank = 0;
                 for (V w : g.getSuccessorVertexSet(v)) {

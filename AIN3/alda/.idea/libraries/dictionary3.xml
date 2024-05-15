@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="dictionary3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/production/alda/aufgabe1/dictionary.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

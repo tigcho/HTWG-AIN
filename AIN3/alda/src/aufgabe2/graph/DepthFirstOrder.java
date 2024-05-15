@@ -12,9 +12,9 @@ public class DepthFirstOrder<V> {
     public DepthFirstOrder(DirectedGraph<V> g) {
         myGraph = g;
         Set<V> allVertices = myGraph.getVertexSet();
-        Set<V> besucht = new HashSet<>();
+        Set<V> besucht = new HashSet<>(); // stores visited vertices
         for (V v : allVertices) {
-            if (!preOrder.contains(v)) {
+            if (!preOrder.contains(v)) { // only look at vertices that have not been visited yet
                 numberOfDFTrees++;
                 dfs(v, besucht);
             }
@@ -22,6 +22,7 @@ public class DepthFirstOrder<V> {
     }
 
     private void dfs(V v, Set<V> besucht) {
+        // add v if it has been visited for the first time and mark it as visited
         preOrder.add(v);
         besucht.add(v);
         for (V w : myGraph.getSuccessorVertexSet(v)) {
