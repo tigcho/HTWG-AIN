@@ -5,7 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45ccd2e6-c200-4058-9728-8dc02c0bedc0" name="Changes" comment="aufgabe 1">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/aufgabe2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/aufgabe21.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/aufgabe22.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/aufgabe23.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/dictionary.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/dictionary1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/dictionary2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/dictionary3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/alda.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/alda/aufgabe2/aufgabe2.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/alda/aufgabe2/graph/AdjacencyListDirectedGraph.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/alda/aufgabe2/graph/AdjacencyListDirectedGraph.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/alda/aufgabe2/graph/AnalyzeWebSite.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/alda/aufgabe2/graph/AnalyzeWebSite.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/alda/aufgabe2/graph/DepthFirstOrder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/alda/aufgabe2/graph/DepthFirstOrder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/alda/aufgabe2/graph/TopologicalSort.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/alda/aufgabe2/graph/TopologicalSort.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/aufgabe2/graph/AdjacencyListDirectedGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aufgabe2/graph/AdjacencyListDirectedGraph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/aufgabe2/graph/AnalyzeWebSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aufgabe2/graph/AnalyzeWebSite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/aufgabe2/graph/DepthFirstOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aufgabe2/graph/DepthFirstOrder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +40,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/aufgabe2/graph/AdjacencyListDirectedGraph.java" root0="SKIP_INSPECTION" />
@@ -104,6 +124,7 @@
       <workItem from="1713121005091" duration="15000" />
       <workItem from="1715259534791" duration="7052000" />
       <workItem from="1715339617462" duration="35000" />
+      <workItem from="1715773109340" duration="6906000" />
     </task>
     <task id="LOCAL-00001" summary="aufgabe 1">
       <option name="closed" value="true" />

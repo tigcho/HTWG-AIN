@@ -6,10 +6,10 @@ import java.util.TreeMap;
 import java.util.Set;
 
 public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
-    // doppelte Map für die Nachfolgerknoten:
+    // doppelte Map für Nachfolgerknoten und Gewicht der Kanten:
     private final Map<V, Map<V, Double>> succ = new TreeMap<>(); 
     
-    // doppelte Map für die Vorgängerknoten:
+    // doppelte Map für die Vorgängerknoten und Gewicht der Kanten:
     private final Map<V, Map<V, Double>> pred = new TreeMap<>(); 
 
     private int numberEdge = 0;
@@ -19,6 +19,8 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
 	    if (succ.containsKey(v)) {
 	        return false;
 	    }
+        // v is a new vertex and has no succs and preds yet
+        // so we add an empty map for the succs and preds of v
 	    succ.put(v, new TreeMap<>());
 	    pred.put(v, new TreeMap<>());
 	    return true;
@@ -28,12 +30,13 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
     public boolean addEdge(V v, V w, double weight) {
         addVertex(v);
         addVertex(w);
-        succ.get(v).put(w, weight);
-        pred.get(w).put(v, weight);
+        succ.get(v).put(w, weight); // w is after v in succ
+        pred.get(w).put(v, weight); // v is before w in pred
         numberEdge++;
         return true;
     }
 
+    // overloaded version because weight can either be 1.0 or a given value
     @Override
     public boolean addEdge(V v, V w) {
         return addEdge(v, w, 1.0);
@@ -89,7 +92,18 @@ public class AdjacencyListDirectedGraph<V> implements DirectedGraph<V> {
     public int getNumberOfEdges() {
         return numberEdge;
     }
-	
+
+    // invert the graph by creating a new one and adding the edges in reverse order
+    /* before:
+    * 1 --> 2 weight = 1.0
+    * 2 --> 5 weight = 1.0
+    * 2 --> 6 weight = 1.0
+    * 3 --> 7 weight = 1.0
+    * after:
+    * 2 --> 1 weight = 1.0
+    * 5 --> 2 weight = 1.0
+    * 6 --> 2 weight = 1.0
+    * 7 --> 3 weight = 1.0 */
     @Override
     public DirectedGraph<V> invert() {
         DirectedGraph<V> g = new AdjacencyListDirectedGraph<>();
