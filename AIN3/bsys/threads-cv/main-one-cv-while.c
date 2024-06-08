@@ -6,10 +6,8 @@
 #include <pthread.h>
 #include <sys/time.h>
 #include <string.h>
-
 #include "common.h"
 #include "common_threads.h"
-
 #include "pc-header.h"
 
 pthread_cond_t cv = PTHREAD_COND_INITIALIZER;
@@ -35,7 +33,7 @@ int do_get() {
 }
 
 void *producer(void *arg) {
-    int id = (int) arg;
+    int id = (intptr_t) arg;
     // make sure each producer produces unique values
     int base = id * loops; 
     int i;
@@ -52,7 +50,7 @@ void *producer(void *arg) {
 }
                                                                                
 void *consumer(void *arg) {
-    int id = (int) arg;
+    int id = (intptr_t) arg;
     int tmp = 0;
     int consumed_count = 0;
     while (tmp != END_OF_STREAM) { c0;
