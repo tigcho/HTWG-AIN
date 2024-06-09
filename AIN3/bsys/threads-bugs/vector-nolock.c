@@ -29,4 +29,3 @@ void fini() {}
 
 
 #include "main-common.c"
-
