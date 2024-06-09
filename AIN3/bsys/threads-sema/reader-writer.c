@@ -8,22 +8,79 @@
 //
 
 typedef struct __rwlock_t {
+    sem_t lock;
+	sem_t writelock;
+	int readers;
+	int writers;
+	int waiting_writers;
+	int waiting_readers;
 } rwlock_t;
 
 
 void rwlock_init(rwlock_t *rw) {
+    rw->readers = 0;
+	rw->writers = 0;
+	rw->waiting_writers = 0;
+	rw->waiting_readers = 0;
+	Sem_init(&rw->lock, 1);
+	Sem_init(&rw->writelock, 1);
 }
 
+// a starvation can occur here because a reader thread increases the waiting readers
+// and then waits while there are active writers
+// the reader might keep waiting forever because each new writer will acquire the lock
+// and the reader will never get the chance to acquire the lock
 void rwlock_acquire_readlock(rwlock_t *rw) {
+    Sem_wait(&rw->lock);
+	rw->waiting_readers++;
+	while(rw->writers > 0 || rw->waiting_writers > 0){
+		Sem_post(&rw->lock);
+		Sem_wait(&rw->lock);
+	}
+	rw->waiting_readers--;
+	rw->readers++;
+	Sem_post(&rw->lock);
 }
 
 void rwlock_release_readlock(rwlock_t *rw) {
+    Sem_wait(&rw->lock);
+	rw->readers--;
+	if(rw->readers == 0 && rw->waiting_writers > 0){
+		Sem_post(&rw->writelock);
+	}
+	Sem_post(&rw->lock);
 }
 
+// a starvation can occur here because a writer thread increases the waiting writes
+// and then waits while there are active readers and writers
+// the writer might keep waiting forever because each new reader will acquire the lock
+// and the writer will never get the chance to acquire the lock
 void rwlock_acquire_writelock(rwlock_t *rw) {
+    Sem_wait(&rw->lock);
+	rw->waiting_writers++;
+	while(rw->readers > 0 || rw->writers > 0){
+		Sem_post(&rw->lock);
+		Sem_wait(&rw->writelock);
+		Sem_wait(&rw->lock);
+	}
+	rw->waiting_writers--;
+	rw->writers++;
+	Sem_post(&rw->lock);
 }
 
 void rwlock_release_writelock(rwlock_t *rw) {
+	Sem_wait(&rw->lock);
+	rw->writers--;
+	if(rw->waiting_writers > 0){
+		Sem_post(&rw->writelock);
+	}
+	else{
+		while(rw->readers > 0){
+			Sem_post(&rw->lock);
+			Sem_wait(&rw->lock);
+		}
+	}
+	Sem_post(&rw->lock);
 }
 
 //
