@@ -5,25 +5,75 @@
 
 //
 // Your code goes in the structure and functions below
+// focus on no starvation
 //
 
 typedef struct __rwlock_t {
+    sem_t lock;
+    sem_t writelock;
+    int readers;
+    int writers;
+    int pending_writers;
+    int pending_readers;
 } rwlock_t;
 
 
 void rwlock_init(rwlock_t *rw) {
+    rw->readers = 0;
+	rw->writers = 0;
+	rw->pending_writers = 0;
+	rw->pending_readers = 0;
+	Sem_init(&rw->lock, 1);
+	Sem_init(&rw->writelock, 1);
 }
 
 void rwlock_acquire_readlock(rwlock_t *rw) {
+    Sem_wait(&rw->lock);
+	if (rw->writers > 0 || rw->pending_writers > 0) {
+		rw->pending_readers++;
+		Sem_post(&rw->lock);
+		Sem_wait(&rw->writelock);
+		Sem_wait(&rw->lock);
+		rw->pending_readers--;
+	}
+	rw->readers++;
+	Sem_post(&rw->lock);
 }
 
 void rwlock_release_readlock(rwlock_t *rw) {
+    Sem_wait(&rw->lock);
+	rw->readers--;
+	if (rw->readers == 0 && rw->pending_writers > 0) {
+		Sem_post(&rw->writelock);
+	}
+	Sem_post(&rw->lock);
 }
 
 void rwlock_acquire_writelock(rwlock_t *rw) {
+    Sem_wait(&rw->lock);
+	if (rw->readers > 0 || rw->writers > 0) {
+		rw->pending_writers++;
+		Sem_post(&rw->lock);
+		Sem_wait(&rw->writelock);
+		Sem_wait(&rw->lock);
+		rw->pending_writers--;
+	}
+	rw->writers++;
+	Sem_post(&rw->lock);
 }
 
 void rwlock_release_writelock(rwlock_t *rw) {
+    Sem_wait(&rw->lock);
+	rw->writers--;
+	if (rw->pending_writers > 0) {
+		Sem_post(&rw->writelock);
+	} else {
+		while (rw->pending_readers > 0) {
+			Sem_post(&rw->lock);
+			Sem_wait(&rw->lock);
+		}
+	}
+	Sem_post(&rw->lock);
 }
 
 //
