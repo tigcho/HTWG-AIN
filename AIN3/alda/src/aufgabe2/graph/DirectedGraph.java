@@ -1,3 +1,6 @@
+// O. Bittel;
+// 22.02.2017
+
 package aufgabe2.graph;
 
 import java.util.Set;
@@ -7,10 +10,12 @@ import java.util.Set;
  * Mit g.addEdge(v,w, weight) wird eine gerichtete Kante von v nach w mit dem Gewicht weight einfügt.
  * Falls kein Gewicht angegeben wird, dann ist das Gewichte implizit auf 1 gesetzt.
  * Der Graph einthält keine Mehrfachkanten.
+ * @author Oliver Bittel
+ * @since 22.03.2018
  * @param <V> Knotentyp.
  */
 public interface DirectedGraph<V> {
-	/**
+    /**
      * Fügt neuen Knoten zum Graph dazu.
      * @param v Knoten
      * @return true, falls Knoten noch nicht vorhanden war.
@@ -19,10 +24,10 @@ public interface DirectedGraph<V> {
 
     /**
      * Fügt neue Kante (mit Gewicht 1) zum Graph dazu.
-	 * Falls einer der beiden Knoten noch nicht im Graphen vorhanden ist,
-	 * dann wird er dazugefügt.
-	 * Falls die Kante schon vorhanden ist, dann wird das Gewicht 
-	 * mit 1 überschrieben. 
+     * Falls einer der beiden Knoten noch nicht im Graphen vorhanden ist,
+     * dann wird er dazugefügt.
+     * Falls die Kante schon vorhanden ist, dann wird das Gewicht
+     * mit 1 überschrieben.
      * @param v Startknoten
      * @param w Zielknoten
      * @return true, falls Kante noch nicht vorhanden war.
@@ -31,10 +36,10 @@ public interface DirectedGraph<V> {
 
     /**
      * Fügt neue Kante mit Gewicht weight zum Graph dazu.
-	 * Falls einer der beiden Knoten noch nicht im Graphen vorhanden ist,
-	 * dann wird er dazugefügt.
-	 * Falls die Kante schon vorhanden ist, dann wird das Gewicht 
-	 * mit weight überschrieben.
+     * Falls einer der beiden Knoten noch nicht im Graphen vorhanden ist,
+     * dann wird er dazugefügt.
+     * Falls die Kante schon vorhanden ist, dann wird das Gewicht
+     * mit weight überschrieben.
      * @param v Startknoten
      * @param w Zielknoten
      * @param weight Gewicht
@@ -56,12 +61,12 @@ public interface DirectedGraph<V> {
      * @return true, falls Kante vorhanden ist.
      */
     boolean containsEdge(V v, V w);
-    
+
     /**
      * Liefert Gewicht der Kante zurück.
      * @param v Startknoten
      * @param w Endknoten
-	 * @throws IllegalArgumentException falls die Kante nicht existiert.
+     * @throws IllegalArgumentException falls die Kante nicht existiert.
      * @return Gewicht der Kante.
      */
     double getWeight(V v, V w);
@@ -80,11 +85,12 @@ public interface DirectedGraph<V> {
 
     /**
      * Liefert eine nicht modifizierbare Sicht (unmodifiable view) 
-	 * auf die Menge aller Knoten im Graph zurück.
+     * auf die Menge aller Knoten im Graph zurück.
+     *
      * @return Knotenmenge
      */
     Set<V> getVertexSet();
-    
+
 
     /**
      * Liefert Eingangsgrad des Knotens v zurück.
@@ -108,7 +114,7 @@ public interface DirectedGraph<V> {
 
     /**
      * Liefert eine nicht modifizierbare Sicht (unmodifiable view) auf
-	 * die Menge aller Vorgängerknoten von v zurück.
+     * die Menge aller Vorgängerknoten von v zurück.
      * Das sind alle die Knoten, von denen eine Kante zu v führt.
      * @param v Knoten
      * @throws IllegalArgumentException falls Knoten v
@@ -119,7 +125,7 @@ public interface DirectedGraph<V> {
 
     /**
      * Liefert eine nicht modifizierbare Sicht (unmodifiable view) auf 
-	 * die Menge aller Nachfolgerknoten von v zurück. 
+     * die Menge aller Nachfolgerknoten von v zurück.
      * Das sind alle die Knoten, zu denen eine Kante von v führt.
      * @param v Knoten
      * @throws IllegalArgumentException falls Knoten v
@@ -127,10 +133,10 @@ public interface DirectedGraph<V> {
      * @return Knotenmenge
      */
     Set<V> getSuccessorVertexSet(V v);
-	
-	/**
+
+    /**
      * Erzeugt einen invertierten Graphen, 
-	 * indem jede Kante dieses Graphens in umgekehrter Richtung abgespeichert wird. 
+     * indem jede Kante dieses Graphens in umgekehrter Richtung abgespeichert wird.
      * @return invertierter Graph
      */
     DirectedGraph<V> invert();
