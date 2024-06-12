@@ -1,43 +1,60 @@
+// O. Bittel;
+// 22.02.2017
+
 package aufgabe2.graph;
 
 import java.util.*;
 
+/**
+ * Klasse zur Erstellung einer topologischen Sortierung.
+ * @author Oliver Bittel
+ * @since 22.02.2017
+ * @param <V> Knotentyp.
+ */
 public class TopologicalSort<V> {
-	private final List<V> ts = new LinkedList<>();
+	private List<V> ts = new LinkedList<>(); // topologisch sortierte Folge
+	// ...
 
-	public TopologicalSort(DirectedGraph<V> graph) {
-		List<V> result = new LinkedList<>();
-		Map<V, Integer> inDegree = new TreeMap<>();
-		Queue<V> q = new ArrayDeque<>();
-
-		for (V v : graph.getVertexSet()) {
-			inDegree.put(v, graph.getInDegree(v));
-			if (inDegree.get(v) == 0) {
+	/**
+	 * Führt eine topologische Sortierung für g durch.
+	 * @param g gerichteter Graph.
+	 */
+	public TopologicalSort(DirectedGraph<V> g) {
+		List<V> l = new LinkedList<>();
+		Queue<V> q = new LinkedList<>();
+		Map<V, Integer> inDegree = new HashMap<>();
+		for (V v : g.getVertexSet()) {
+			inDegree.put(v, g.getInDegree(v));
+			if (g.getInDegree(v) == 0) {
 				q.add(v);
 			}
 		}
-
 		while (!q.isEmpty()) {
-			V v = q.remove();
-			result.add(v);
-			for (V w : graph.getSuccessorVertexSet(v)) {
+			V v = q.poll();
+			l.add(v);
+			for (V w : g.getSuccessorVertexSet(v)) {
 				inDegree.put(w, inDegree.get(w) - 1);
 				if (inDegree.get(w) == 0) {
 					q.add(w);
 				}
 			}
 		}
-
-		if (result.size() == graph.getNumberOfVertexes()) {
-			ts.addAll(result);
+		if (l.size() == g.getNumberOfVertexes()) {
+			ts = l;
 		}
 	}
 
+	/**
+	 * Liefert eine nicht modifizierbare Liste (unmodifiable view) zurück,
+	 * die topologisch sortiert ist.
+	 * @return topologisch sortierte Liste
+	 */
 	public List<V> topologicalSortedList() {
 		return Collections.unmodifiableList(ts);
 	}
 
-    public static void main(String[] args) {
+
+	public static void main(String[] args) {
 		DirectedGraph<Integer> g = new AdjacencyListDirectedGraph<>();
 		g.addEdge(1, 2);
 		g.addEdge(2, 3);
@@ -53,5 +70,5 @@ public class TopologicalSort<V> {
 		if (ts.topologicalSortedList() != null) {
 			System.out.println(ts.topologicalSortedList()); // [1, 2, 3, 4, 5, 6, 7]
 		}
-    }
+	}
 }

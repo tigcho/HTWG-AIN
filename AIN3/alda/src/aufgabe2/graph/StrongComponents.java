@@ -7,54 +7,72 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+/**
+ * Klasse für Bestimmung aller strengen Komponenten.
+ * Kosaraju-Sharir Algorithmus.
+ * @author Oliver Bittel
+ * @since 22.02.2017
+ * @param <V> Knotentyp.
+ */
 public class StrongComponents<V> {
+	// comp speichert jede Komponente die zughörigen Knoten.
 	private final Map<Integer,Set<V>> comp = new TreeMap<>();
-	private int count;
 
+	// Anzahl der Komponenten:
+	private int numberOfComp = 0;
+
+	/**
+	 * Ermittelt alle strengen Komponenten mit
+	 * dem Kosaraju-Sharir Algorithmus.
+	 * @param g gerichteter Graph.
+	 */
 	public StrongComponents(DirectedGraph<V> g) {
-		DepthFirstOrder<V> p = new DepthFirstOrder<>(g);
-		List<V> pi = new LinkedList<>(p.postOrder());
-		Collections.reverse(pi);
-
+		DepthFirstOrder<V> dfo = new DepthFirstOrder<>(g);
+		List<V> p = dfo.postOrder();
+		List<V> pi = p.reversed();
 		DirectedGraph<V> gi = g.invert();
-
 		Set<V> besucht = new HashSet<>();
-		for (var v : pi) {
+		for (V v : pi) {
 			if (!besucht.contains(v)) {
-				comp.put(count, new TreeSet<>());
-				comp.get(count).add(v);
-				visitDF(v, gi, besucht);
-				count++;
+				Set<V> compSet = new TreeSet<>();
+				dfs(gi, v, besucht, compSet);
+				comp.put(numberOfComp, compSet);
+				numberOfComp++;
 			}
 		}
 	}
 
-	private void visitDF(V v, DirectedGraph<V> g, Set<V> besucht) {
+	private void dfs(DirectedGraph<V> g, V v, Set<V> besucht, Set<V> compSet) {
 		besucht.add(v);
-		for(var w : g.getSuccessorVertexSet(v)) {
+		compSet.add(v);
+		for (V w : g.getSuccessorVertexSet(v)) {
 			if (!besucht.contains(w)) {
-				comp.get(count).add(w);
-				visitDF(w, g, besucht);
+				dfs(g, w, besucht, compSet);
 			}
 		}
 	}
 
+	/**
+	 *
+	 * @return Anzahl der strengen Komponeneten.
+	 */
 	public int numberOfComp() {
-		return comp.size();
+		return numberOfComp;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for (var key : comp.entrySet()) {
-			sb.append("Component " + key.getKey() + ": ");
-			for (var val : key.getValue()) {
-				sb.append(val + ", ");
+		for (int i = 0; i < numberOfComp; i++) {
+			sb.append("Component ").append(i).append(": ");
+			for (V v : comp.get(i)) {
+				sb.append(v).append(", ");
 			}
 			sb.append("\n");
 		}
 		return sb.toString();
 	}
+
 
 	public static void main(String[] args) {
 		DirectedGraph<Integer> g = new AdjacencyListDirectedGraph<>();

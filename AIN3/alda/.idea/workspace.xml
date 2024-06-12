@@ -5,7 +5,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45ccd2e6-c200-4058-9728-8dc02c0bedc0" name="Changes" comment="aufgabe 1">
+      <change afterPath="$PROJECT_DIR$/../../AIN2/.idea/AIN2.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/prog2.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/prog21.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/src/workshop1/workshop1.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/src/workshop2/workshop2.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../AIN2/sysprog/sysprog.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/data/ExampleGraph.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/data/ScotlandYard_Kanten.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/data/ScotlandYard_Knoten.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/data/london.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/data/stations.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/gui/Map.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/gui/MapEntry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/gui/Route.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/gui/SimGUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/gui/Station.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/gui/Toolbar.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/shortestPath/ExampleGraph.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/shortestPath/Heuristic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/shortestPath/IndexMinPQ.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/shortestPath/ScotlandYard.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/shortestPath/ShortestPath.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/sim/SYDemo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/sim/SYSimulation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/aufgabe2/graph/AdjacencyListDirectedGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aufgabe2/graph/AdjacencyListDirectedGraph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/aufgabe2/graph/AnalyzeWebSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aufgabe2/graph/AnalyzeWebSite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/aufgabe2/graph/DepthFirstOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aufgabe2/graph/DepthFirstOrder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/aufgabe2/graph/DirectedGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aufgabe2/graph/DirectedGraph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/aufgabe2/graph/StrongComponents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aufgabe2/graph/StrongComponents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/aufgabe2/graph/TopologicalSort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aufgabe2/graph/TopologicalSort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bsys/bsys-ss25-gruppe-14" beforeDir="false" afterPath="$PROJECT_DIR$/../bsys/bsys-ss25-gruppe-14" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bsys/bsys-ss25-gruppe-14/dishes/feeder.py" beforeDir="false" afterPath="$PROJECT_DIR$/../bsys/bsys-ss25-gruppe-14/dishes/feeder.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +67,7 @@
     <setting file="file://$PROJECT_DIR$/src/aufgabe2/graph/DepthFirstOrder.java" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/src/aufgabe2/graph/StrongComponents.java" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/src/aufgabe2/graph/TopologicalSort.java" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/aufgabe3/src/shortestPath/IndexMinPQ.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
@@ -37,43 +76,48 @@
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="2eum6MtGtQpBOn9QfF35dwOGixw" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;Application.AdjacencyListDirectedGraph.executor&quot;: &quot;Run&quot;,
-    &quot;Application.AnalyzeWebSite.executor&quot;: &quot;Run&quot;,
-    &quot;Application.DepthFirstOrder.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Measurement.executor&quot;: &quot;Run&quot;,
-    &quot;Application.StrongComponents.executor&quot;: &quot;Run&quot;,
-    &quot;Application.TUI.executor&quot;: &quot;Run&quot;,
-    &quot;Application.TopologicalSort.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/selin/HTWG-AIN/AIN3/alda&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Application.AdjacencyListDirectedGraph.executor": "Run",
+    "Application.AnalyzeWebSite.executor": "Run",
+    "Application.DepthFirstOrder.executor": "Run",
+    "Application.Measurement.executor": "Run",
+    "Application.ScotlandYard.executor": "Run",
+    "Application.StrongComponents.executor": "Run",
+    "Application.TUI.executor": "Run",
+    "Application.TopologicalSort.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/selin/HTWG-AIN/AIN2",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17011.79" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17011.79" />
       </set>
     </attachedChunks>
   </component>
@@ -92,6 +136,8 @@
       <workItem from="1715339617462" duration="35000" />
       <workItem from="1715773109340" duration="6947000" />
       <workItem from="1715782310492" duration="4000" />
+      <workItem from="1718209397241" duration="17000" />
+      <workItem from="1718209648546" duration="1260000" />
     </task>
     <task id="LOCAL-00001" summary="aufgabe 1">
       <option name="closed" value="true" />
@@ -116,6 +162,7 @@
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="aufgabe 1" />
     <option name="LAST_COMMIT_MESSAGE" value="aufgabe 1" />
   </component>
