@@ -5,43 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45ccd2e6-c200-4058-9728-8dc02c0bedc0" name="Changes" comment="aufgabe 1">
-      <change afterPath="$PROJECT_DIR$/../../AIN2/.idea/AIN2.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/prog2.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/prog21.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/src/workshop1/workshop1.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../AIN2/prog2/src/workshop2/workshop2.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../AIN2/sysprog/sysprog.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/data/ExampleGraph.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/data/ScotlandYard_Kanten.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/data/ScotlandYard_Knoten.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/data/london.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/data/stations.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/gui/Map.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/gui/MapEntry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/gui/Route.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/gui/SimGUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/gui/Station.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/gui/Toolbar.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/shortestPath/ExampleGraph.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/shortestPath/Heuristic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/shortestPath/IndexMinPQ.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/shortestPath/ScotlandYard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/shortestPath/ShortestPath.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/sim/SYDemo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aufgabe3/src/sim/SYSimulation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aufgabe2/graph/AdjacencyListDirectedGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aufgabe2/graph/AdjacencyListDirectedGraph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aufgabe2/graph/AnalyzeWebSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aufgabe2/graph/AnalyzeWebSite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aufgabe2/graph/DepthFirstOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aufgabe2/graph/DepthFirstOrder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aufgabe2/graph/DirectedGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aufgabe2/graph/DirectedGraph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aufgabe2/graph/StrongComponents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aufgabe2/graph/StrongComponents.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aufgabe2/graph/TopologicalSort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aufgabe2/graph/TopologicalSort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../AIN2/prog2/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../AIN2/prog2/.idea/prog2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../AIN2/prog2/.idea/prog2.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bsys/bsys-ss25-gruppe-14" beforeDir="false" afterPath="$PROJECT_DIR$/../bsys/bsys-ss25-gruppe-14" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bsys/bsys-ss25-gruppe-14/dishes/feeder.py" beforeDir="false" afterPath="$PROJECT_DIR$/../bsys/bsys-ss25-gruppe-14/dishes/feeder.py" afterDir="false" />
     </list>
@@ -137,7 +102,7 @@
       <workItem from="1715773109340" duration="6947000" />
       <workItem from="1715782310492" duration="4000" />
       <workItem from="1718209397241" duration="17000" />
-      <workItem from="1718209648546" duration="1260000" />
+      <workItem from="1718209648546" duration="1742000" />
     </task>
     <task id="LOCAL-00001" summary="aufgabe 1">
       <option name="closed" value="true" />
