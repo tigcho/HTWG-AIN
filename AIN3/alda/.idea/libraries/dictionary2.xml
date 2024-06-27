@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="dictionary2">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/src/aufgabe1/dictionary.zip!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
