@@ -1,62 +1,95 @@
 import socket
 import struct
+from enum import Enum
 
-def calculate_result(operation, numbers):
-    if operation == "SUM": return sum(numbers)
-    elif operation == "PRO": 
-        result = 1
-        for n in numbers: result *= n
-        return result
-    elif operation == "MIN": return min(numbers)
-    elif operation == "MAX": return max(numbers)
-    return 0
+class Operation(Enum):
+    SUM = b"SUM"
+    PRODUCT = b"PRO"
+    MINIMUM = b"MIN"
+    MAXIMUM = b"MAX"
 
-socket_type = input("Choose server type (tcp/udp): ").lower()
+class CalculationServer:
+    def __init__(self):
+        self.host = "localhost"
+        self.port = 12345
+        self.socket = None
 
-if socket_type == "tcp":
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind(('127.0.0.1', 12345))
-    server.listen(1)
-    print("TCP Server running on port 12345")
-    
-    while True:
-        client_sock, addr = server.accept()
-        try:
-            data = client_sock.recv(4)
-            task_id = struct.unpack('!I', data)[0]
-            operation = client_sock.recv(3).decode('utf-8')
-            n = struct.unpack('!B', client_sock.recv(1))[0]
+    def create_socket(self, sock_type):
+        if sock_type == "1": 
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        else:
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    def decode_msg(self, msg):
+    # Message format:
+    #
+    # struct.unpack("!I3sB", msg[:8])
+    # [1][SUM][3] [5][-2][10]     # actual values
+    #  |  |   |   |  |   |
+    #  4b 3b  1b  4b 4b  4b       # byte size
+    #  ID op  cnt num num num     # what it means
+    #  <-header-> <-numbers->
+    #
+        msg_id, op, count = struct.unpack("!I3sB", msg[:8]) 
+        numbers = list(struct.unpack(f"!{count}i", msg[8:])) # take everything after header
+        return msg_id, op, numbers
+
+    def calc(self, op, numbers):
+        if op == Operation.SUM.value:
+            return sum(numbers)
+        elif op == Operation.PRODUCT.value:
+            result = 1
+            for num in numbers:
+                result *= num
+            return result
+        elif op == Operation.MINIMUM.value:
+            return min(numbers)
+        elif op == Operation.MAXIMUM.value:
+            return max(numbers)
+
+    def serve_forever(self):
+        self.socket.bind((self.host, self.port))
+
+        if self.socket.type == socket.SOCK_STREAM:
+            self.socket.listen(5)
+            print(f"TCP Server listening on {self.host}:{self.port}")
+
+            while True:
+                client_socket, address = self.socket.accept()
+                try:
+                    msg = client.socket.recv(1024)
+                    if msg:
+                        msg_id, op, numbers = self.decode_msg(msg)
+                        result = self.calc(op, numbers)
+                        response = struct.pack("!Ii", msg_id, result)
+                        client_socket.send(response)
+                finally:
+                    client_socket.close()
+        else:
+            print(f"UDP Server listening on {self.host}:{self.port}")
             
-            numbers = []
-            for _ in range(n):
-                num = struct.unpack('!i', client_sock.recv(4))[0]
-                numbers.append(num)
-            
-            result = calculate_result(operation, numbers)
-            response = struct.pack('!Ii', task_id, result)
-            client_sock.send(response)
-        finally:
-            client_sock.close()
-else:
-    server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    server.bind(('127.0.0.1', 12345))
-    print("UDP Server running on port 12345")
-    
-    while True:
-        data, addr = server.recvfrom(1024)
-        task_id = struct.unpack('!I', data[0:4])[0]
-        operation = data[4:7].decode('utf-8')
-        n = struct.unpack('!B', data[7:8])[0]
-        
-        numbers = []
-        for i in range(n):
-            num = struct.unpack('!i', data[8+i*4:12+i*4])[0]
-            numbers.append(num)
-        
-        result = calculate_result(operation, numbers)
-        response = struct.pack('!Ii', task_id, result)
-        server.sendto(response, addr)
+            while True:
+                msg, address = self.socket.recvfrom(1024)
+                msg_id, op, numbers = self.decode_msg(msg)
+                result = self.calc(op, numbers)
+                response = struct.pack("!Ii", msg_id, result)
+                self.socket.sendto(response, address)
 
-        if input("Do you want to exit? (y/n): ").lower() == "y":
-            break
-    server.close()
+def main():
+    print("Choose socket type (1-2): ")
+    print("1. UDP\n2. TCP")
+    sock_type = input().strip()
+
+    server = CalculationServer()
+    server.create_socket(sock_type)
+
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("Server stopped...")
+    finally:
+        if server.socket:
+            server.socket.close()
+
+if __name__ == "__main__":
+    main()
