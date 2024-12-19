@@ -1,34 +1,97 @@
 import socket
 import struct
+from enum import Enum
 
-socket_type = input("Choose socket type (tcp/udp): ").lower()
-if socket_type == "tcp":
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect(('127.0.0.1', 12345))
-else:
-    client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# convert because socket functions require bytes
+class Operation(Enum):
+    SUM = b"SUM"
+    PRODUCT = b"PRO"
+    MINIMUM = b"MIN"
+    MAXIMUM = b"MAX"
 
-try:
-    task_id = int(input("Task ID (1-999): "))
-    print("\nOperations: SUM, PRO, MIN, MAX")
-    operation = input("Operation: ").upper()
-    numbers = [int(x) for x in input("Numbers (space-separated): ").split()]
+class CalculatorClient:
+    def __init__(self):
+        self.host = "localhost"
+        self.port = 12345
+        # let the user choose socket type
+        self.socket = None
 
-    message = struct.pack('!I', task_id)
-    message += operation.encode('utf-8')
-    message += struct.pack('!B', len(numbers))
-    for num in numbers:
-        message += struct.pack('!i', num)
+    def create_socket(self, sock_type):
+        if sock_type == "1": # UDP
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        else: # TCP
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    if socket_type == "tcp":
-        client.send(message)
-        response = client.recv(8)
-    else:
-        client.sendto(message, ('127.0.0.1', 12345))
-        response, _ = client.recvfrom(8)
+    def get_op(self):
+        print("Choose operation (1-4):")
+        print("1. Sum")
+        print("2. Product")
+        print("3. Minimum")
+        print("4. Maximum")
+        
+        choice = input()
 
-    resp_id, result = struct.unpack('!Ii', response)
-    print(f"Result: {result}")
+        if choice == "1":
+            return Operation.SUM
+        elif choice == "2":
+            return Operation.PRODUCT
+        elif choice == "3":
+            return Operation.MINIMUM
+        elif choice == "4":
+            return Operation.MAXIMUM
+        else:
+            print("Invalid choice. Try again.")
+            return self.get_op()
 
-finally:
-    client.close()
+    def get_numbers(self):
+        print("Enter numbers separated by space: ")
+        numbers_input = input()
+        return [int(x) for x in numbers_input.split()]
+
+    def create_msg(self, op, numbers):
+    # ! - network big-endian, makes sure every computer stores numbers the same way
+    # I - unsigned int (4 bytes) for msg_id
+    # 3s - for operation value
+    # B - length of numbers
+        msg = struct.pack("!I3sB", 1, op.value, len(numbers))
+
+        for num in numbers:
+        # i - signed int (4 bytes) for calc nums
+            msg += struct.pack("!i", num)
+
+        return msg
+
+    def send_and_receive(self, msg):
+        if self.socket.type == socket.SOCK_DGRAM:
+            self.socket.sendto(msg, (self.host, self.port))
+            response, _ = self.socket.recvfrom(1024)
+        else:
+            self.socket.connect((self.host, self.port))
+            self.socket.send(msg)
+            response = self.socket.recv(1024)
+
+        msg_id, result = struct.unpack("!Ii", response)
+        return result
+
+    def run(self):
+        try:
+            op = self.get_op()
+            numbers = self.get_numbers()
+            msg = self.create_msg(op, numbers)
+            result = self.send_and_receive(msg)
+            print(f"\nResult: {result}")
+        finally:
+            if self.socket:
+                self.socket.close()
+
+def main():
+    print("Choose socket type (1-2):")
+    print("1. UDP\n2. TCP")
+    sock_type = input().strip()
+
+    client = CalculatorClient()
+    client.create_socket(sock_type)
+    client.run()
+
+if __name__ == "__main__":
+    main()
