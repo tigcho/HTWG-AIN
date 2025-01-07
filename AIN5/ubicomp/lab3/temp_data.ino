@@ -11,9 +11,10 @@ void setup() {
 }
 
 void loop() {
-  float temperature = IMU.temperature();
+  int temp = 0;
+  IMU.readTemperature(temp);
   Serial.print("Temperature: ");
-  Serial.print(temperature);
+  Serial.print(temp);
   Serial.println(" °C");
   delay(1000);
 }
