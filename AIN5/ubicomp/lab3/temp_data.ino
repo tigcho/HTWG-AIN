@@ -5,16 +5,14 @@ void setup() {
   Serial.begin(9600);
   while (!Serial);
   if (!IMU.begin()) {
-    Serial.println("Failed to initialize IMU!");
-    while (1);
+	Serial.println("Failed to initialize IMU!");
+	while (1);
   }
 }
 
 void loop() {
   int temp = 0;
   IMU.readTemperature(temp);
-  Serial.print("Temperature: ");
-  Serial.print(temp);
-  Serial.println(" °C");
+  Serial.println(temp);
   delay(1000);
 }

@@ -1,0 +1,161 @@
+[
+    {
+        "id": "337cbc255ef9f1d3",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ef66ac463c56b5d1",
+        "type": "mqtt in",
+        "z": "337cbc255ef9f1d3",
+        "name": "",
+        "topic": "temp",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e93a12d8241a732f",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 180,
+        "wires": [
+            [
+                "97100dceb32c1f72"
+            ]
+        ]
+    },
+    {
+        "id": "19d8a61e165f918d",
+        "type": "mqtt out",
+        "z": "337cbc255ef9f1d3",
+        "name": "",
+        "topic": "temp",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e93a12d8241a732f",
+        "x": 430,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "42aced111cee5f34",
+        "type": "inject",
+        "z": "337cbc255ef9f1d3",
+        "name": "dummy port",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 240,
+        "wires": [
+            [
+                "2e116e40dd705f4a"
+            ]
+        ]
+    },
+    {
+        "id": "97100dceb32c1f72",
+        "type": "debug",
+        "z": "337cbc255ef9f1d3",
+        "name": "payload",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 260,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "2e116e40dd705f4a",
+        "type": "function",
+        "z": "337cbc255ef9f1d3",
+        "name": "function 1",
+        "func": "return {payload: \"{\\\"temp\\\":\" + msg.payload % 50 + \"}\"};",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 240,
+        "wires": [
+            [
+                "19d8a61e165f918d"
+            ]
+        ]
+    },
+    {
+        "id": "e93a12d8241a732f",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "ed252c7bed364d39be6ae76b255a8a5d.s1.eu.hivemq.cloud",
+        "port": "8883",
+        "tls": "0652a2759c18d462",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "0652a2759c18d462",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "ed252c7bed364d39be6ae76b255a8a5d",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    }
+]
